@@ -1,0 +1,28 @@
+I am a programmer who communicate to you through API. So i need a perfect answer from you. I have the text file named "syntax.txt" which have the content
+"
+{ "grammar/method.txt" }
+"
+My compiler check the syntax error using this text file.
+{ input }
+Reply what is the content inside the text file only. No explaination. No "here's the .." texts.
+Here are the rules to obey for writing in the text file
+1. If you want to comment anything in text file, just start with '//'. If '//' is in the line but not at first, then after '//' is a text which shows when the syntax in line detected.
+2. Dont change the following token in text file present in text file.
+    TOKEN_DATATYPE, TOKEN_ID, EXPRESSION, TOKEN_INTEGER, FUNCTION_NAME
+3. The compiler saves the token from user whenever the token in text file starting with TOKEN is found. The compiler saves the starting token and ending token from user whenever the token which does not start with TOKEN in text file with capital letter (like EXPRESSION).
+If the order of the saving does changed just remember it. Answer it when i ask it later. Not now
+4. Dont change the line by line order of the syntax. 
+5. Only write in english characters. Even if it is another language.
+Give me the content i need to put in text file only.
+For example,
+If i need a programming language like malayalam language, reply me just
+"
+//Declaration
+TOKEN_DATATYPE TOKEN_ID ennu paranjaal EXPRESSION aanu
+//Errors in while declaration
+TOKEN_DATATYPE TOKEN_ID ennu // 'ennu' kazhingu enthenkilm pratheekshikkunnu
+//if starts
+(EXPRESSION) anenkil
+//endif 
+cheyyu
+"

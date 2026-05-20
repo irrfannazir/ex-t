@@ -1,0 +1,1 @@
+ So add what to do for my mistake as comment in the program. Later i will finalize. But don't remove anything from the given program. Mention the purpose also before the program briefly.

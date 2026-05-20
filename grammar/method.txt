@@ -1,0 +1,14 @@
+//Declaration
+TOKEN_DATATYPE TOKEN_ID = EXPRESSION $$DECLARE(ID)
+TOKEN_DATATYPE TOKEN_ID $$DECLARE(ID)
+//Errors in declaration
+TOKEN_DATATYPE TOKEN_ID = // expecting expression after '='
+//Conditional
+if ( EXPRESSION ) :
+else if ( EXPRESSION ) :
+else :
+//Loop
+for ( TOKEN_DATATYPE TOKEN_ID from EXPRESSION to EXPRESSION ) :
+while ( EXPRESSION ) :
+print { } // No Arguments are given for print
+print { ARGUMENT }

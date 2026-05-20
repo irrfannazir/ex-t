@@ -1,0 +1,13 @@
+//Declaration
+TOKEN_DATATYPE TOKEN_ID ko EXPRESSION ke barabar rakho
+//Errors in declaration
+TOKEN_DATATYPE TOKEN_ID ko // 'ko' ke baad expression hona chahiye
+//Conditional
+agar ( EXPRESSION ) to :
+warna agar ( EXPRESSION ) to :
+warna :
+//Loop
+ke liye ( TOKEN_DATATYPE TOKEN_ID EXPRESSION se EXPRESSION tak ) :
+jab tak ( EXPRESSION ) :
+//Print
+likho { ARGUMENT }
