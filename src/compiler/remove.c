@@ -26,8 +26,6 @@ void remove_string_from_file(const char *filename, const char *target, int isloo
     while (fgets(line, sizeof(line), src)) {
         char *read_ptr = line;
         char *pos;
-
-        // printf("%s", line);
         
         while ((pos = strstr(read_ptr, target)) != NULL) {
             if (isloop == 0 && removed_once) {

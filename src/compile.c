@@ -38,7 +38,6 @@ void add_the_program(const char *pfn, const char *efn){
     int indent_tab_number = 0;
     i++;
     while(parsed_data != NULL){
-        // printf("%s\n", parsed_data);
         trim_newline(parsed_data);
         if(get_indentation(i - 2) < get_indentation(i - 1)){
             if(indent_tab_number == 0){
@@ -46,7 +45,6 @@ void add_the_program(const char *pfn, const char *efn){
             }
         }
         int count;
-        // printf("%s\n", parsed_data);
         int *arr = line_to_int_array(parsed_data, &count);
         process_parametres(efn, arr, count);
         parsed_data = get_nth_line(PARSING_HANDLING_FILE_NAME, i, NULL);
