@@ -23,7 +23,7 @@
 
 // flush
 #ifdef DELETE_UNWANTED_FILES
-  static const char *unwanted_filenames[] = {
+  static char *unwanted_filenames[] = {
     "lex.txt",
     PARSING_HANDLING_FILE_NAME,
     PGM_EXATED_FILE_NAME,

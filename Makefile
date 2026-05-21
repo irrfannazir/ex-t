@@ -19,7 +19,7 @@ OBJDIR = obj
 OBJ = $(patsubst %.c,$(OBJDIR)/%.o,$(SRC))
 
 # Final executable name
-TARGET = ex-c
+TARGET = ex-t
 
 # Default target
 all: $(TARGET)

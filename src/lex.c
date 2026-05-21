@@ -212,7 +212,7 @@ int dfa_char_analysis(char c, int *s, struct lexInfo *li){
     return 0;
 }
 
-int lexf(const int8_t isinput, const char *ex_filename, const char *dest_filename){
+int lexf(const char *ex_filename, const char *dest_filename){
     char c;
     int state = 0;
     struct lexInfo li = init_lexInfo();
@@ -220,20 +220,7 @@ int lexf(const int8_t isinput, const char *ex_filename, const char *dest_filenam
     clear_file(DFA_LEXEME_FILENAME);
     clear_file(DFA_TOKEN_FILENAME);
     init_stat();
-    if(isinput){
-        char *com;
-        int i = 0;
-        com = (char*)malloc(INLINE_PROGRAM_MAX_SIZE);
-        if( !com ) printf("%s:%d: The memory allocation failed.\n", __FILE__, __LINE__);
-        scanf("%[^#]s", com);          // TODO: Replace with safer input method
-        while(com[i] != '\0'){
-            int status = dfa_char_analysis(com[i], &state, &li);
-            i++;
-	        if (status) break;
-        }
-        puts("");
-        c = com[i];
-    }else if(ex_filename != NULL){
+    if(ex_filename != NULL){
         FILE *file = fopen(ex_filename, "r");
         if (!file) {
             delete_file(DFA_TOKEN_FILENAME);
@@ -245,7 +232,7 @@ int lexf(const int8_t isinput, const char *ex_filename, const char *dest_filenam
             int status = dfa_char_analysis(c, &state, &li);
             if (status) break;
         }
-	puts("");
+	    puts("");
         fclose(file);
     }
     printf("\nTokenizing the command.\n");

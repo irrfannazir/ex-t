@@ -2,7 +2,7 @@
 #include "compile/sh.h"
 
 
-void for_condition(int *arr, int count){
+void for_condition(const char *fn, int *arr, int count){
     static char temp[C_PROGRAM_MAX] = "";
     const char *datatype = find_datatype(arr[ORDER_DATATYPE]);
     const char *id = get_token(arr[ORDER_ID]);
@@ -17,5 +17,5 @@ void for_condition(int *arr, int count){
         id,
         PGM_CURSOR
     );
-    insert_before_target(PGM_EXATED_FILE_NAME, temp, PGM_CURSOR);
+    insert_before_target(fn, temp, PGM_CURSOR);
 }
