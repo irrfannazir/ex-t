@@ -6,7 +6,7 @@
 #include "common/fileh.h"
 #include "data.h"
 
-void process_parametres(const char *pfn, int *arr, int count){
+void process_parametres(const char *ffn, const char *pfn, int *arr, int count){
     switch(arr[0]){
         case 0:
             declaration_exec(pfn, arr, count);
@@ -27,12 +27,12 @@ void process_parametres(const char *pfn, int *arr, int count){
             block_paradigm(pfn, "while", arr, count);
             break;
         case 9:
-            print_statement(pfn, arr, count);
+            print_statement(ffn, pfn, arr, count);
             break;
     }
 }
 
-void add_the_program(const char *pfn, const char *efn){
+void add_the_program(const char *pfn, const char *ffn, const char *efn){
     int i = 0;
     char *parsed_data = get_nth_line(pfn, i, NULL);
     int indent_tab_number = 0;
@@ -46,25 +46,26 @@ void add_the_program(const char *pfn, const char *efn){
         }
         int count;
         int *arr = line_to_int_array(parsed_data, &count);
-        process_parametres(efn, arr, count);
+        process_parametres(ffn, efn, arr, count);
         parsed_data = get_nth_line(PARSING_HANDLING_FILE_NAME, i, NULL);
         i++;
         if( ( get_indentation(i - 3) - indent_tab_number == get_indentation(i - 2) ) && indent_tab_number != 0){
-            remove_string_from_file(PGM_EXATED_FILE_NAME, PGM_CURSOR, 0);
+            remove_string_from_file(efn, PGM_CURSOR, 0);
         }
         free(arr);
     }
 }
 
-int compilef(const char *src_filename, const char *dest_filename){
+
+int compilef(const char *src_filename, const char *final_filename, const char *dest_filename){
     if(dont_compile) return 1;
     printf("Compiling the program.\n");
     create_file(dest_filename, DEFAULT_PROGRAM);
-    add_the_program(src_filename, dest_filename);
+    add_the_program(src_filename, final_filename, dest_filename);
     printf("********The output program implemented in C programming Language********\n\n");
     remove_string_from_file(dest_filename, PGM_CURSOR, 1);
-    remove_string_from_file(dest_filename, FUNCTION_CURSOR, 1);
-    remove_string_from_file(dest_filename, INCLUDE_CURSOR, 1);
+    remove_string_from_file(final_filename, FUNCTION_CURSOR, 1);
+    remove_string_from_file(final_filename, INCLUDE_CURSOR, 1);
     print_file_content(dest_filename);
     printf("\n\n\n");
     return 0;

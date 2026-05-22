@@ -11,7 +11,7 @@ static inline int last_command(char *command){
     }
 }
 
-int compilef(const char *src_filename, const char *dest_filename);
+int compilef(const char *src_filename, const char *final_filename, const char *dest_filename);
 int flushf();
 
 #endif

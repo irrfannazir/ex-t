@@ -6,11 +6,13 @@
 #include "lex/lfn.h"
 #include "lex/d_fh.h"
 #include "lex/lerror.h"
+#include "common/default.h"
 #include "common/constants.h"
 #include "common/pc_error.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
+
 
 const char delimiter = ';';
 int dont_compile = 0;
@@ -212,16 +214,22 @@ int dfa_char_analysis(char c, int *s, struct lexInfo *li){
     return 0;
 }
 
-int lexf(const char *ex_filename, const char *dest_filename){
+
+
+int lexf(const char *ex_filename, const char *dest_filename, const int isinline){
     char c;
     int state = 0;
     struct lexInfo li = init_lexInfo();
+    int permission = 0;
     clear_file(dest_filename);
     clear_file(DFA_LEXEME_FILENAME);
     clear_file(DFA_TOKEN_FILENAME);
+    clear_file(PROGRAM_FILENAME); 
     init_stat();
     if(ex_filename != NULL){
         FILE *file = fopen(ex_filename, "r");
+        FILE *fpgm = fopen(PROGRAM_FILENAME, "w");
+        fprintf(fpgm, "%s\n", DEFAULT_HEADER_PROGRAM);
         if (!file) {
             delete_file(DFA_TOKEN_FILENAME);
             delete_file(DFA_LEXEME_FILENAME);
@@ -229,13 +237,28 @@ int lexf(const char *ex_filename, const char *dest_filename){
             return 1;
         }
         while((c = fgetc(file)) != -1){
-            int status = dfa_char_analysis(c, &state, &li);
-            if (status) break;
+            if(isinline){
+                if(c == LEX_TOKEN_START && fgetc(file) == LEX_TOKEN_START) {
+                    if(!permission) fputs(EXPGM_CURSOR, fpgm);
+                    permission = !permission;
+                    continue;
+                }
+                if(permission){
+                    int status = dfa_char_analysis(c, &state, &li);
+                    if (status) break;
+                }else{
+                    putc(c, fpgm);
+                }
+            }else{
+                int status = dfa_char_analysis(c, &state, &li);
+                if (status) break;
+            }
         }
 	    puts("");
         fclose(file);
+        fclose(fpgm);
     }
-    printf("\nTokenizing the command.\n");
+    printf("\nTokenizing...\n");
 
     dfa_char_analysis('\n', &state, &li);
     change_to_form(dest_filename, DFA_TOKEN_FILENAME, DFA_LEXEME_FILENAME);

@@ -6,12 +6,12 @@ typedef enum {
     TO
 }p_prev;
 
-void print_statement(const char *fn, int *arr, int count){
+void print_statement(const char *ffn, const char *efn, int *arr, int count){
     static char format[C_PROGRAM_MAX] = "";
     static char para[C_PROGRAM_MAX] = "";
     static char temp[C_PROGRAM_MAX*100] = "";
     p_prev flag = NO;
-    add_the_header(fn, "stdio.h");
+    add_the_header(ffn, "stdio.h");
     // insert_newline_before_target(fn, INCLUDE_CURSOR);
     for(int i = arr[1]; i < arr[2]; i++){
         if(strcmp(get_token(i), ",") == 0){
@@ -45,5 +45,5 @@ void print_statement(const char *fn, int *arr, int count){
         }
     }
     sprintf(temp, "printf(\"%s\"%s);", format, para);
-    insert_before_target(fn, temp, PGM_CURSOR);
+    insert_before_target(efn, temp, PGM_CURSOR);
 }

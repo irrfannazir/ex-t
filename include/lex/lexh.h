@@ -5,6 +5,8 @@
 #define DFA_LEXEME_FILENAME "dfa_lexeme.txt"
 #define DFA_TOKEN_FILENAME "dfa_token.txt"
 
+#define LEX_TOKEN_START '%'
+
 
 int iskeyword(const char *str);
 int isdatatype(const char *str);
@@ -23,7 +25,7 @@ static inline int is_digit(char c) {
 }
 
 static inline int is_punct(char c) {
-    const char *punct = "(){}[].,:'\"";
+    const char *punct = "%(){}[].,:'\"";
     for (int i = 0; punct[i] != '\0'; i++) {
         if (punct[i] == c)
             return 1;

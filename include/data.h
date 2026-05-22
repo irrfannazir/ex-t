@@ -15,10 +15,8 @@
 
 //filename
 #define PARSING_HANDLING_FILE_NAME "parse.txt"
-#define PGM_EXATED_FILE_NAME "program.c"
 #define DEFINED_IDENTIFIER_FILE_NAME "name_identifier.txt"
 #define PARSE_DATATYPE_LIST_FILE_NAME "grammar/t_stat.txt"
-
 
 
 // flush
@@ -26,7 +24,6 @@
   static char *unwanted_filenames[] = {
     "lex.txt",
     PARSING_HANDLING_FILE_NAME,
-    PGM_EXATED_FILE_NAME,
     DEFINED_IDENTIFIER_FILE_NAME,
   };
 #endif
