@@ -1,12 +1,10 @@
-#ifndef INLINEF_H
-#define INLINEF_H
+#include <stdio.h>
 #include <string.h>
-#include "parseh.h"
-#include "strh.h"
+#include "parse/parseh.h"
+#include "parse/strh.h"
 
 
-
-int is_variable_redefining(){
+static inline int is_variable_redefining(){
     FILE *file = fopen(DEFINED_IDENTIFIER_FILE_NAME, "r");
     char name[NAME_STRLEN];
     while(fgets(name, NAME_STRLEN, file)){
@@ -20,7 +18,7 @@ int is_variable_redefining(){
     return 0;
 }
 
-static inline int method_inline_function(int mln){
+int method_inline_function(int mln){
     if(working_identifier[0] != '\0'){
         if(is_variable_redefining()){
             char temp[1024 + NAME_STRLEN];
@@ -39,5 +37,3 @@ static inline int method_inline_function(int mln){
     }
     return 0;
 }
-
-#endif

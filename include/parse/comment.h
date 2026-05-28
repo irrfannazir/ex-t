@@ -18,7 +18,7 @@ static inline int is_inline_function(const char *str){
 
 static inline int contains_function(const char *str) {
     if (!str) return 0;
-    return strstr(str, "$$") != NULL;
+    return strstr(str, SYNTAX_FUNCTION_TOKEN) != NULL;
 }
 
 #endif

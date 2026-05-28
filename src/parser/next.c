@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "parse/parseh.h"
-#include "parse/inlinef.h"
 #include "parse/perror.h"
 #include "data.h"
 
@@ -10,6 +9,7 @@
 int lsn = 0;
 int ltn = 0;
 
+int method_inline_function(int mln);
 
 int get_index_from_lex(int cl){
     if(get_type(lsn+ltn) == TOKEN_EOF){
