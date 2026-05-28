@@ -34,7 +34,7 @@ static inline int is_punct(char c) {
 }
 
 static inline int is_oper(char c) {
-    const char *operators = "+-*/=<>";
+    const char *operators = "+-*/=<>?";
     for (int i = 0; operators[i] != '\0'; i++) {
         if (operators[i] == c)
             return 1;

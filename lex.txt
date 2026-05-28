@@ -1,7 +1,0 @@
-0 
--1 2
-3 print
-5 {
-8 "Hello World"
-5 }
-0 

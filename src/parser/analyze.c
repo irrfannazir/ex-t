@@ -36,11 +36,20 @@ int handle_tertiary_op(struct Node *ptr, char *word, int ci) {
 }
 
 void handle_binary_op(struct Node *ptr, char *word, int ci) {
+    if(ptr -> left && ptr->right->left->format == NULL){
+        // assign the endpoint of the binary production rule
+        const int start = ptr->right->left->start;
+        const int size = ptr->right->left->size;
+        const int decr = start + size - ci;
+        ptr->right->left->format = strdup(word);
+        ptr->right->left->size = size - decr;
+        return;
+    }
     ptr->left = createNode(NULL, OPERATOR, ci, 1);
     ptr->right = createNode(NULL, BINARY_EXPRESSION, -1, -1);
     ptr->right->right = createNode(strdup(word), EXPRESSION, ptr->start, ci - ptr->start);
     ptr->right->left = createNode(NULL, EXPRESSION, ci + 1,
-        (ptr->start + ptr->size) - (ci + 1));
+        (ptr->start + ptr->size) - (ci + 1)); 
 }
 
 void assign_last_word(struct Node *ptr, char *word, int nos) {
@@ -54,12 +63,18 @@ void assign_last_word(struct Node *ptr, char *word, int nos) {
             ptr->right->left->size =
                 (ptr->start + ptr->size) - ptr->right->left->start;
         }
+    }    
+    if (nos == 1){
+        free(ptr->format);
+        ptr -> format = strdup(word);
     }
 }
 
-int find_matching_token(int ci, struct Node *ptr, char *end) {
-    while (!compare_the_word(end, get_token(ci)) &&
-           ci < ptr->start + ptr->size) {
+int find_matching_token(int ci, char *end) {
+    while (
+        get_token(ci) != NULL &&
+        !compare_the_word(end, get_token(ci))
+    ) {
         ci++;
     }
     return ci;
@@ -68,10 +83,10 @@ int find_matching_token(int ci, struct Node *ptr, char *end) {
 int check_line(struct Node *ptr, char *syn_line) {
     int nos = count_tree_needed_words(syn_line);
     int ci = ptr->start;
-
+    
     char *copy = strdup(syn_line);
     if (!copy) return 1;
-
+    
     char *word = strtok(copy, " \t\n");
 
     while (word != NULL) {
@@ -79,13 +94,13 @@ int check_line(struct Node *ptr, char *syn_line) {
             char *end = strtok(NULL, " \t\n");
 
             if (end != NULL) {
-                ci = find_matching_token(ci, ptr, end);
-
+                ci = find_matching_token(ci, end);
+                
                 if (ci == ptr->start + ptr->size) {
                     free(copy);
                     return 1;
                 }
-
+                
                 switch (nos) {
                     case 3:
                         ci = handle_tertiary_op(ptr, word, ci);
@@ -96,6 +111,8 @@ int check_line(struct Node *ptr, char *syn_line) {
                 }
             } else {
                 assign_last_word(ptr, word, nos);
+                free(copy);
+                return 0;
             }
         } 
         else if (!compare_the_word(word, get_token(ci))) {
@@ -106,12 +123,14 @@ int check_line(struct Node *ptr, char *syn_line) {
         word = strtok(NULL, " \t\n");
         ci++;
     }
-
+    if(ptr -> left == NULL && ptr -> right == NULL) ptr -> data = TERMINAL;
     free(copy);
     return 0;
 }
 
 int analyze_expression(struct Node *ptr){
+    if(ptr -> format == NULL) return 1;
+    
     // Go through each line from syntax.txt
     int ln = 0;
     char *syn_line = get_nth_line(SYNTAX_DIRECTORY, ln, ptr -> format);
@@ -119,6 +138,10 @@ int analyze_expression(struct Node *ptr){
     ln++;
     while(syn_line != NULL){
         int status;
+        if(syn_line[0] == '\n'){
+            free(syn_line);
+            return 1;
+        }
         status = check_line(ptr, syn_line);
         if(status){
             syn_line = get_nth_line(SYNTAX_DIRECTORY, ln, ptr -> format);

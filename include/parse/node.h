@@ -2,6 +2,7 @@
 #define OPERATOR 1
 #define BINARY_EXPRESSION 2
 #define TERT_EXPRESSION 3
+#define TERMINAL 4
 
 struct Node{
     char *format;

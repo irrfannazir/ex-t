@@ -4,3 +4,4 @@
 
 ## Features
 - Now you can run any programming language in your system via ex-t.
+- Ex: ./ex-t gcc demo.c -o m
