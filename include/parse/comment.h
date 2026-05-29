@@ -1,7 +1,6 @@
 #ifndef SYNTAX_COMMENT_H
 #define SYNTAX_COMMENT_H
 
-#include <string.h>
 
 #define SYNTAX_COMMENT_TOKEN "//"
 #define SYNTAX_FUNCTION_TOKEN "$$"
@@ -16,9 +15,5 @@ static inline int is_inline_function(const char *str){
     return str[0] == '$' && str[1] == '$';
 }
 
-static inline int contains_function(const char *str) {
-    if (!str) return 0;
-    return strstr(str, SYNTAX_FUNCTION_TOKEN) != NULL;
-}
 
 #endif

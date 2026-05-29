@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include <sys/stat.h>
+#include <string.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include "common/fileh.h"
 #include "common/pc_error.h"
 #include "parse/comment.h"

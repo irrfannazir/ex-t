@@ -22,8 +22,8 @@ int handle_missing_word_or_token(const char *word, int index,
 }
 
 void handle_identifier_declaration(int index, int method_line_num) {
-    if (get_type(index) == TOKEN_IDENTIFIER &&
-        contains_function(read_nth_content_from_file(METHOD_DIRECTORY, method_line_num))) {
+    const char *syntax = read_nth_content_from_file(METHOD_DIRECTORY, method_line_num);
+    if (syntax && get_type(index) == TOKEN_IDENTIFIER && strstr(syntax, SYNTAX_FUNCTION_TOKEN) != NULL){
         strcpy(working_identifier, get_token(index));
     }
 }
