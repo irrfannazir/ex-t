@@ -1,6 +1,5 @@
 #ifndef PARSEH_H
 #define PARSEH_H
-#include <string.h>
 #include "data.h"
 
 #define PARSE_DETAILS_MAX DIGIT*10

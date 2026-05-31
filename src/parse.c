@@ -4,6 +4,7 @@
 #include "parse/parseh.h"
 #include "parse/perror.h"
 #include "common/fileh.h"
+#include "common/errorm.h"
 #include "data.h"
 
 char working_identifier[NAME_STRLEN] = "";
@@ -12,13 +13,17 @@ void parsef(const char *src_filename, const char *dest_filename) {
     printf("Parsing the tokens.\n");
     create_file(dest_filename, NULL);
     create_file(DEFINED_IDENTIFIER_FILE_NAME, "");
+    create_file(ERROR_HANDLING_FILENAME, "");
 
     int method_line_num = 0;
     int method_token_num = 0;
 
+    char *word;
+    int index;
+
     while (1) {
-        char *word = get_word_from_method(method_line_num, method_token_num);
-        int index = get_index_from_lex(1);
+        word = get_word_from_method(method_line_num, method_token_num);
+        index = get_index_from_lex(1);
 
         log_debug("Analysing %s and %s\n", word, get_token(index));
 
@@ -77,5 +82,7 @@ void parsef(const char *src_filename, const char *dest_filename) {
 
         clear_identifier_buffer();
     }
+
+    printError(ERROR_HANDLING_FILENAME);
 }
 

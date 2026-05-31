@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "parse/perror.h"
 #include "parse/parseh.h"
 #include "parse/comment.h"

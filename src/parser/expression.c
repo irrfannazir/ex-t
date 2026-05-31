@@ -1,8 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "parse/node.h"
 #include "parse/parseh.h"
 #include "parse/strh.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 
 int is_declared_variable(int index){

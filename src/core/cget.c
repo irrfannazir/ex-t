@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "parse/strh.h"
 
 char *get_nth_line(const char* filename, int n, const char *keyword){
