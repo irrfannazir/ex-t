@@ -4,7 +4,6 @@
 #include "parse/parseh.h"
 #include "parse/perror.h"
 #include "common/fileh.h"
-#include "common/errorm.h"
 #include "data.h"
 
 char working_identifier[NAME_STRLEN] = "";
@@ -13,7 +12,6 @@ void parsef(const char *src_filename, const char *dest_filename) {
     printf("Parsing the tokens.\n");
     create_file(dest_filename, NULL);
     create_file(DEFINED_IDENTIFIER_FILE_NAME, "");
-    create_file(ERROR_HANDLING_FILENAME, "");
 
     int method_line_num = 0;
     int method_token_num = 0;
@@ -83,6 +81,5 @@ void parsef(const char *src_filename, const char *dest_filename) {
         clear_identifier_buffer();
     }
 
-    printError(ERROR_HANDLING_FILENAME);
 }
 
