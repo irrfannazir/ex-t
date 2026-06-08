@@ -20,9 +20,8 @@ char *get_error_message_from_method(int line_number) {
     int current_line = 0;
 
     while (fgets(line, sizeof(line), file)) {
-        if(is_inline_comment(line)){
-            continue;
-        }
+        if(is_inline_comment(line)) continue;
+
         if (current_line == line_number) {
             fclose(file);
 
@@ -61,8 +60,8 @@ char *get_error_message_from_method(int line_number) {
 void report_method_error(int method_line_num) {
     const char *msg = get_error_message_from_method(method_line_num);
     if (msg != NULL) {
-        printf("Error (%d): %s\n", num_lines(lsn) + 1, msg);
+        printf("Error (%d): %s\n", num_lines(lsn), msg);
     } else {
-        printf("Error (%d): %s\n", num_lines(lsn) + 1, DEFAULT_ERROR_MESSAGE);
+        printf("Error (%d): %s\n", num_lines(lsn), DEFAULT_ERROR_MESSAGE);
     }
 }

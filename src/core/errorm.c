@@ -25,10 +25,20 @@ int pushError(const char *fn, const int priority, const char *msg, ...){
 
 #define LINE_MAX 1024
 
-int printError(const char *filename){
+int printError(const char *filename, const char *default_msg){
     FILE *fh = fopen(filename, "r");
     char line[LINE_MAX];
-    while(fgets(line, LINE_MAX, fh)) printf("%s", line);
+    char msg[LINE_MAX] = "";
+    int max = 0;
+    int priority = 0;
+    while(fscanf(fh, "%d %[^\n]s", &priority, line) == 2){
+        if(max <= priority){
+            strcpy(msg, line);
+            max = priority;
+        }
+    }
+    if(msg[0] == '\0') strcpy(msg, default_msg);
+    printf("%s\n", msg);
     fclose(fh);
     fh = fopen(filename, "w");
     fclose(fh);

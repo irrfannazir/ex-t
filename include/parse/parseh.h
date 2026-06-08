@@ -34,7 +34,6 @@ void push_error(const char *temp);
 int print_error();
 
 void report_method_error(int method_line_num);
-int handle_missing_word_or_token(const char *word, int index, int *method_line_num, int *method_token_num);
 void handle_identifier_declaration(int index, int method_line_num);
 int try_match_type(char *word, int index, int *method_token_num);
 int try_match_word(char *word, int index, int *method_token_num);

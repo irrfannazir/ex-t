@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include "parse/parseh.h"
 #include "parse/perror.h"
+#include "parse/syntax.h"
+#include "parse/comment.h"
+#include "common/pc_error.h"
+#include "common/errorm.h"
 #include "data.h"
 
 
@@ -22,13 +26,38 @@ int get_index_from_lex(int cl){
     }
 }
 
+#define MAX_LINE_LENGTH 1024
+
+int count_inline_comment_until(int mln){
+    FILE *file = fopen(METHOD_DIRECTORY, "r");
+    if (!file) {
+        __pc_error__("Error while retrieving method word from the file named %s", METHOD_DIRECTORY);
+        return 0;
+    }
+
+    char line[MAX_LINE_LENGTH];
+    int current_line = 0;
+    int inline_comment_count = 0;
+
+    // Read lines until reaching the desired one
+    while (fgets(line, sizeof(line), file)) {
+        if(is_inline_comment(line)) continue;
+        if(is_inline_comment(strstr(line, SYNTAX_COMMENT_TOKEN))) inline_comment_count++;        
+        if (current_line == mln) return inline_comment_count;
+        current_line++;
+    }
+
+    fclose(file);
+    return 0; // Line not found
+}
+
 int skip_to_next_line(int *mln, int *mtn){
     char *error_message = get_error_message_from_method(*mln);
     if(error_message != NULL){
         push_error(error_message);
     }
     free(error_message);
-    method_inline_function(*mln);
+    method_inline_function(*mln - count_inline_comment_until(*mln));
     if(error != NULL){
         printf("Error (%d): ", num_lines(lsn));
         dont_compile = 1;

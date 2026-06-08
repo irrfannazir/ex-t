@@ -4,6 +4,8 @@
 #include "parse/parseh.h"
 #include "parse/perror.h"
 #include "common/fileh.h"
+#include "common/pc_error.h"
+#include "common/errorm.h"
 #include "data.h"
 
 char working_identifier[NAME_STRLEN] = "";
@@ -12,6 +14,7 @@ void parsef(const char *src_filename, const char *dest_filename) {
     printf("Parsing the tokens.\n");
     create_file(dest_filename, NULL);
     create_file(DEFINED_IDENTIFIER_FILE_NAME, "");
+    create_file(ERROR_HANDLING_FILENAME, "");
 
     int method_line_num = 0;
     int method_token_num = 0;
@@ -24,42 +27,33 @@ void parsef(const char *src_filename, const char *dest_filename) {
         index = get_index_from_lex(1);
 
         log_debug("Analysing %s and %s\n", word, get_token(index));
+        uint8_t flag = FLAGS_TO_INT(uint8_t,
+            get_token(index) == NULL,
+            index == -1,
+            word == NULL
+        );
 
-        if (get_token(index) == NULL && word == NULL) {
-            skip_to_next_line(&method_line_num, &method_token_num);
-            log_debug("\tSkipping to next line.\n");
-
-            if (!get_token(get_index_from_lex(0))) {
+        switch(flag){
+            case 0b001:
+                pushError(ERROR_HANDLING_FILENAME, method_line_num, "%s is unexpected", strdup(get_token(index)));
+                if(method_token_num == 0) report_method_error(method_line_num);
+                skip_to_next_line(&method_line_num, &method_token_num);
+                continue;
+            case 0b110:
+                log_debug("\tSkipping to next method\n");
+                skip_to_next_method(&method_line_num, &method_token_num);
+                continue;
+            case 0b111:
+                log_debug("\tSkipping to next line.\n");
+                report_method_error(method_line_num);
+                skip_to_next_line(&method_line_num, &method_token_num);
+                continue;
+            case 0b100:
+            case 0b101:
                 log_debug("End of parsing\n");
                 return;
-            }
-            continue;
         }
 
-        if (index == -1 || word == NULL) {
-            if (handle_missing_word_or_token(word, index, &method_line_num, &method_token_num)) {
-                continue; // error already reported, continue parsing
-            }
-            log_debug("\tSkipping to next method\n");
-            skip_to_next_method(&method_line_num, &method_token_num);
-            continue;
-        }
-
-        if (word == NULL && (index == -1 || method_token_num == 0)) {
-            report_method_error(method_line_num);
-            dont_compile = 1;
-
-            if (skip_to_next_line(&method_line_num, &method_token_num)) {
-                log_debug("End of file.\n");
-                break;
-            }
-            continue;
-        }
-
-        if (index == -1 || get_token(index) == NULL) {
-            skip_to_next_method(&method_line_num, &method_token_num);
-            continue;
-        }
 
         handle_identifier_declaration(index, method_line_num);
 
