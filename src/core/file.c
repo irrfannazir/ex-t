@@ -9,22 +9,25 @@
 #define MAX_WORD_LENGTH 256
 #define MAX_LINE_LENGTH MAX_WORD_LENGTH*10
 
-void create_file(const char *filename, const char *content) {
+int create_file(const char *filename, const char *content) {
     FILE *file = fopen(filename, "w");
     if ( !file ) {
         __pc_error__("Error creating file named %s", filename);
-        return;
+        return 1;
     }
     
     if (content) {
         if (fputs(content, file) == EOF) {
             __pc_error__("Error writing content to file %s", filename);
+            return 1;
         }
     }
     
     if (fclose(file) != 0) {
         __pc_error__("Error closing file %s", filename);
+        return 1;
     }
+    return 0;
 }
 
 void print_file_content(const char* filename) {
@@ -57,4 +60,12 @@ char *read_nth_content_from_file(const char *filename, int n){
 
     fclose(file);
     return temp;
+}
+
+int delete_file(const char *filename){
+    if(remove(filename) != 0){
+        perror("Error on real-time data alteration");
+        return 1;
+    }
+    return 0;
 }

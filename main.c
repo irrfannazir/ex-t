@@ -17,6 +17,8 @@
 
 int combine_the_files(char *fn1, char * fn2);
 
+extern int dont_compile;
+
 int main(int argc, char *argv[]){
     char buffer[1024] = "";
     char *cache[1024];
@@ -26,9 +28,9 @@ int main(int argc, char *argv[]){
         if(new_file_name(argv[i])){ 
             char dest[FILE_NAME_MAX];
             const int isinline = get_dest_filename(dest, argv[i]);
-
             lexf(argv[i], LEX_HANDLING_FILENAME, isinline);
             parsef(LEX_HANDLING_FILENAME, PARSE_HANDLING_FILENAME);
+            if(dont_compile) return 1;
             compilef(PARSE_HANDLING_FILENAME, PROGRAM_FILENAME, dest);
             combine_the_files(PROGRAM_FILENAME, dest);
 

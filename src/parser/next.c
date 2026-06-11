@@ -7,6 +7,7 @@
 #include "parse/comment.h"
 #include "common/pc_error.h"
 #include "common/errorm.h"
+#include "common/fileh.h"
 #include "data.h"
 
 

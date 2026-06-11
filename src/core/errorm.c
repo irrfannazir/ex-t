@@ -12,32 +12,36 @@ int ReadLine(const char *filename, char *line, int size, int ln){
 }
 
 
-int pushError(const char *fn, const int priority, const char *msg, ...){
+int pushError(const char *fn, const float priority, const char *msg, ...){
     FILE *fh = fopen(fn, "a");
     va_list args;
     va_start(args, msg);
-    fprintf(fh, "%d ", priority);
-    fprintf(fh, msg, args);
-    fprintf(fh, "\n");
+    fprintf(fh, "%f ", priority);
+    vfprintf(fh, msg, args);
+    printf("\n");
     va_end(args);
     fclose(fh);
+    return 1;
 }
 
 #define LINE_MAX 1024
 
-int printError(const char *filename, const char *default_msg){
+int printError(const char *filename, int mln){
     FILE *fh = fopen(filename, "r");
-    char line[LINE_MAX];
+    char line[LINE_MAX] = "";
     char msg[LINE_MAX] = "";
-    int max = 0;
-    int priority = 0;
-    while(fscanf(fh, "%d %[^\n]s", &priority, line) == 2){
-        if(max <= priority){
+    float max = 0;
+    float priority = 0;
+    printf("Error (%d): ", mln);
+    while(fscanf(fh, "%f %[^\n]s", &priority, line) == 2){
+        if(max < priority){
             strcpy(msg, line);
+            strcat(msg, "\n");
             max = priority;
+        }else if(max == priority){
+            strcat(msg, line);
         }
     }
-    if(msg[0] == '\0') strcpy(msg, default_msg);
     printf("%s\n", msg);
     fclose(fh);
     fh = fopen(filename, "w");

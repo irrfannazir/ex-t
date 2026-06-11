@@ -5,10 +5,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+
 static inline int read_file(const char *fn, char **content) {
     FILE *file = fopen(fn, "rb");
     if (file == NULL) {
-        perror("Error opening file");
+        __pc_error__("Error opening file %s", fn);
         return 1;
     }
 
@@ -24,14 +26,14 @@ static inline int read_file(const char *fn, char **content) {
     
     *content = (char *)malloc(file_size + 1);
     if (*content == NULL) {
-        perror("Memory allocation failed");
+        __pc_error__("Memory allocation failed");
         fclose(file);
         return 1;
     }
     
     size_t bytes_read = fread(*content, 1, file_size, file);
     if (bytes_read < (size_t)file_size && ferror(file)) {
-        perror("Error reading file");
+        __pc_error__("Error reading file %s", fn);
         free(*content);
         *content = NULL;
         fclose(file);

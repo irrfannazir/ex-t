@@ -7,8 +7,9 @@
 #include "lex/d_fh.h"
 #include "lex/lerror.h"
 #include "common/default.h"
-#include "common/constants.h"
 #include "common/pc_error.h"
+#include "common/fileh.h"
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -221,10 +222,9 @@ int lexf(const char *ex_filename, const char *dest_filename, const int isinline)
     int state = 0;
     struct lexInfo li = init_lexInfo();
     int permission = 0;
-    clear_file(dest_filename);
-    clear_file(DFA_LEXEME_FILENAME);
-    clear_file(DFA_TOKEN_FILENAME);
-    clear_file(PROGRAM_FILENAME); 
+    create_file(dest_filename, "");
+    create_file(DFA_LEXEME_FILENAME, "");
+    create_file(DFA_TOKEN_FILENAME, "");
     init_stat();
     if(ex_filename != NULL){
         FILE *file = fopen(ex_filename, "r");

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include "parse/parseh.h"
 #include "parse/perror.h"
 #include "common/fileh.h"
@@ -22,12 +23,19 @@ void parsef(const char *src_filename, const char *dest_filename) {
     char *word;
     int index;
 
+    if(get_type(get_index_from_lex(1)) == TOKEN_NULL) skip_to_next_line(&method_line_num, &method_token_num);
+
     while (1) {
         word = get_word_from_method(method_line_num, method_token_num);
         index = get_index_from_lex(1);
 
-        log_debug("Analysing %s and %s\n", word, get_token(index));
+        log_debug("Analysing %s and %s (%d)\n", word, get_token(index), index);
         uint8_t flag = FLAGS_TO_INT(uint8_t,
+            get_token(index) == NULL,
+            index == -1,
+            word == NULL
+        );
+        log_debug("Flag: %d%d%d\n",
             get_token(index) == NULL,
             index == -1,
             word == NULL
@@ -35,17 +43,22 @@ void parsef(const char *src_filename, const char *dest_filename) {
 
         switch(flag){
             case 0b001:
-                pushError(ERROR_HANDLING_FILENAME, method_line_num, "%s is unexpected", strdup(get_token(index)));
-                if(method_token_num == 0) report_method_error(method_line_num);
-                skip_to_next_line(&method_line_num, &method_token_num);
+                if(method_token_num == 0){
+                    log_debug("\tSkipping to next line.\n");
+                    printError(ERROR_HANDLING_FILENAME, num_lines(lsn));
+                    skip_to_next_line(&method_line_num, &method_token_num);
+                    continue;
+                }
+                report_method_error(method_line_num);
+                skip_to_next_method(&method_line_num, &method_token_num);
                 continue;
             case 0b110:
                 log_debug("\tSkipping to next method\n");
+                pushError(ERROR_HANDLING_FILENAME, method_line_num, "%s is unexpected", strdup(get_token(index)));
                 skip_to_next_method(&method_line_num, &method_token_num);
                 continue;
             case 0b111:
                 log_debug("\tSkipping to next line.\n");
-                report_method_error(method_line_num);
                 skip_to_next_line(&method_line_num, &method_token_num);
                 continue;
             case 0b100:

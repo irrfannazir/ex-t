@@ -6,6 +6,7 @@
 #include "parse/perror.h"
 #include "parse/parseh.h"
 #include "common/pc_error.h"
+#include "common/errorm.h"
 
 #define MAX_LINE_LEN 1024
 

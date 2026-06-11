@@ -7,6 +7,7 @@
 #include "parse/syntax.h"
 #include "common/fileh.h"
 #include "common/pc_error.h"
+#include "common/errorm.h"
 #include "data.h"
 
 
@@ -64,17 +65,18 @@ int handle_syntax_tree(char *word, int index,
         // Search for the ending keyword
         while (index != -1) {
             index = get_index_from_lex(1);
-            __if_it_is_null__(get_token(index),
-                              printf("Error (%d): %s\n", num_lines(lsn), DEFAULT_ERROR_MESSAGE);
-                              dont_compile = 1;
-                              return 0,
-                              "Doesn't found an keyword named %s\n", end);
+            if(get_token(index) == NULL){
+                pushError(ERROR_HANDLING_FILENAME, *method_line_num, "Doesn't found an keyword named %s\n", end);
+                dont_compile = 1;
+                return 0;
+            }
+            
             if (compare_the_word(end, get_token(index))) {
                 break;
             }
         }
         if (index == -1) {
-            push_error("Expected an operator.");
+            pushError(ERROR_HANDLING_FILENAME, *method_line_num, "Expected an operator %s\n", end);
             skip_to_next_method(method_line_num, method_token_num);
             return 1;   // error handled, continue outer loop
         }
