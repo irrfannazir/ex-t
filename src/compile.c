@@ -18,7 +18,7 @@ void process_parametres(const char *ffn, const char *pfn, int *arr, int count){
             block_paradigm(pfn, "else if", arr, count);    
             break;
         case 5:
-            else_condition(pfn, arr, count);
+            else_condition(pfn);
             break;
         case 6:
             for_condition(pfn, arr, count);

@@ -5,9 +5,9 @@
 #include "parse.h"
 #include "compile.h"
 #include "lex/lfh.h"
+#include "lex/lfn.h"
 #include "common/constants.h"
 
-#define LEX_HANDLING_FILENAME "lex.txt"
 #define PARSE_HANDLING_FILENAME "parse.txt"
 #define FINAL_COMPILED_FILENAME "finalpgm.c"
 
@@ -28,8 +28,8 @@ int main(int argc, char *argv[]){
         if(new_file_name(argv[i])){ 
             char dest[FILE_NAME_MAX];
             const int isinline = get_dest_filename(dest, argv[i]);
-            lexf(argv[i], LEX_HANDLING_FILENAME, isinline);
-            parsef(LEX_HANDLING_FILENAME, PARSE_HANDLING_FILENAME);
+            lexf(argv[i], LEX_HANDLING_FILE_NAME, isinline);
+            parsef(PARSE_HANDLING_FILENAME);
             if(dont_compile) return 1;
             compilef(PARSE_HANDLING_FILENAME, PROGRAM_FILENAME, dest);
             combine_the_files(PROGRAM_FILENAME, dest);

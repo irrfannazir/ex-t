@@ -20,7 +20,7 @@ static inline void __pc_error_impl__(const char *file, int line, const char *msg
     ({ \
         unsigned char __flags[] = { __VA_ARGS__ }; \
         TYPE __result = 0; \
-        for (int __i = 0; __i < sizeof(__flags)/sizeof(__flags[0]); __i++) { \
+        for (unsigned int __i = 0; __i < sizeof(__flags)/sizeof(__flags[0]); __i++) { \
             __result <<= FLAG_SIZE;\
             __result |= __flags[__i]; \
         } \

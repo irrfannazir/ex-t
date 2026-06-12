@@ -2,8 +2,7 @@ CC = gcc
 
 INCLUDES = -I include
 
-CFLAGS = $(INCLUDES) -g
-# -Wunused-function -Wall -Wextra
+CFLAGS = $(INCLUDES) -g # -Wunused-function -Wall -Wextra
 
 SRC = main.c \
       $(wildcard src/*.c) \

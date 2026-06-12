@@ -9,6 +9,7 @@ static inline int last_command(char *command){
     } else {
         printf("Compilation failed.\n");
     }
+    return result;
 }
 
 int compilef(const char *src_filename, const char *final_filename, const char *dest_filename);
