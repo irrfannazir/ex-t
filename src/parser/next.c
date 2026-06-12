@@ -29,7 +29,7 @@ int get_index_from_lex(int cl){
 
 #define MAX_LINE_LENGTH 1024
 
-int count_inline_comment_until(int mln){
+static inline int count_inline_comment_until(int mln){
     FILE *file = fopen(METHOD_DIRECTORY, "r");
     if (!file) {
         __pc_error__("Error while retrieving method word from the file named %s", METHOD_DIRECTORY);

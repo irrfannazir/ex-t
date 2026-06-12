@@ -19,7 +19,7 @@ const char delimiter = ';';
 int dont_compile = 0;
 
 
-int dfa_char_analysis(char c, int *s, struct lexInfo *li){
+static inline int dfa_char_analysis(char c, int *s, struct lexInfo *li){
     switch(*s){
         case 0: // Start State: After newline
             if(c == ' '){

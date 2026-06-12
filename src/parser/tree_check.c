@@ -7,7 +7,7 @@
 
 int ssn;
 
-size_t slice_new_line(char *line) {
+static inline size_t slice_new_line(char *line) {
     size_t len = strlen(line);
     while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r' || line[len - 1] == '\t'))
         line[--len] = '\0';
@@ -15,7 +15,7 @@ size_t slice_new_line(char *line) {
 }
 
 
-char* get_nth_colon_line(int n) {
+static inline char* get_nth_colon_line(int n) {
     FILE* file = fopen(SYNTAX_DIRECTORY, "r");
     if (!file){
         __pc_error__("Error while retrieving syntax from file with directory named %s", SYNTAX_DIRECTORY);

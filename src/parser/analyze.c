@@ -8,7 +8,7 @@
 #include "common/fileh.h"
 
 
-int count_tree_needed_words(char *line){
+static inline int count_tree_needed_words(char *line){
     int count = 0;
     char *copy = strdup(line);
     if (!copy) return 0;
@@ -24,7 +24,7 @@ int count_tree_needed_words(char *line){
     return count;
 }
 
-int handle_tertiary_op(struct Node *ptr, char *word, int ci) {
+static inline int handle_tertiary_op(struct Node *ptr, char *word, int ci) {
     if (ptr->right != NULL) {
         ptr->right->right = createNode(strdup(word), EXPRESSION, ptr->start, ci - ptr->start);
         ptr->right->left = createNode(NULL, EXPRESSION, ci + 1, -1);
@@ -36,7 +36,7 @@ int handle_tertiary_op(struct Node *ptr, char *word, int ci) {
     return ci;
 }
 
-void handle_binary_op(struct Node *ptr, char *word, int ci) {
+static inline void handle_binary_op(struct Node *ptr, char *word, int ci) {
     if(ptr -> left && ptr->right->left->format == NULL){
         // assign the endpoint of the binary production rule
         const int start = ptr->right->left->start;
@@ -53,7 +53,7 @@ void handle_binary_op(struct Node *ptr, char *word, int ci) {
         (ptr->start + ptr->size) - (ci + 1)); 
 }
 
-void assign_last_word(struct Node *ptr, char *word, int nos) {
+static inline void assign_last_word(struct Node *ptr, char *word, int nos) {
     if (ptr->right && ptr->right->right) {
         if (nos == 3) {
             ptr->right->left->format = strdup(word);
@@ -71,7 +71,7 @@ void assign_last_word(struct Node *ptr, char *word, int nos) {
     }
 }
 
-int find_matching_token(int ci, char *end) {
+static inline int find_matching_token(int ci, char *end) {
     while (
         get_token(ci) != NULL &&
         !compare_the_word(end, get_token(ci))
@@ -81,7 +81,7 @@ int find_matching_token(int ci, char *end) {
     return ci;
 }
 
-int check_line(struct Node *ptr, char *syn_line) {
+static inline int check_line(struct Node *ptr, char *syn_line) {
     int nos = count_tree_needed_words(syn_line);
     int ci = ptr->start;
     

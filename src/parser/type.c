@@ -2,7 +2,7 @@
 #include "lex/dfah.h"
 
 
-int token_to_type(char *syn){
+static inline int token_to_type(char *syn){
     if(strcmp(syn, "TOKEN_DATATYPE") == 0){
         return (int) TOKEN_DATATYPE;
     }else if(strcmp(syn, "TOKEN_ID") == 0){
