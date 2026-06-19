@@ -42,7 +42,11 @@ int printError(const char *filename, int mln){
             strcat(msg, line);
         }
     }
-    printf("%s\n", msg);
+    if(strcmp(msg, "") == 0){
+        printf("Invalid Syntax\n");
+    }else{
+        printf("%s\n", msg);
+    }
     fclose(fh);
     fh = fopen(filename, "w");
     fclose(fh);

@@ -106,16 +106,27 @@ static inline int dfa_char_analysis(char c, int *s, struct lexInfo *li){
             }
             break;
         case 4: // Digit found
+            if(c == '.'){
+                if(li->point == 0){
+                    li->point = 1;
+                }else{
+                    lexerror(c);
+                    return 1;
+                }
+            }
             if(c == ' '){
                 dfa_new_token(DFA_TOKEN_FILENAME, DFA_LEXEME_FILENAME, TOKEN_INTEGER);
                 *s = 1;
+                li->point = 0;
             }else if(c == '\n' || c == delimiter){
                 dfa_new_token(DFA_TOKEN_FILENAME, DFA_LEXEME_FILENAME, TOKEN_INTEGER);
                 (li -> indent) = 0;
+                li->point = 0;
                 *s = 0;
             }else if(is_string_introduced(c)){
                 dfa_new_token(DFA_TOKEN_FILENAME, DFA_LEXEME_FILENAME, TOKEN_INTEGER);
                 dfa_string_conc(DFA_LEXEME_FILENAME, c);
+                li->point = 0;
                 *s = 2;
             }else if(is_char(c)){
                 dfa_string_conc(DFA_LEXEME_FILENAME, c);
@@ -127,16 +138,19 @@ static inline int dfa_char_analysis(char c, int *s, struct lexInfo *li){
                 char error_msg[msg_len];
                 snprintf(error_msg, msg_len, text, size, last_token);
                 lexerror(error_msg);
+                li->point = 0;
                 *s = 0;
             }else if(is_digit(c)){
                 dfa_string_conc(DFA_LEXEME_FILENAME, c);
             }else if(is_oper(c)){
                 dfa_new_token(DFA_TOKEN_FILENAME, DFA_LEXEME_FILENAME, TOKEN_INTEGER);
                 dfa_string_conc(DFA_LEXEME_FILENAME, c);
+                li->point = 0;
                 *s = 5;
             }else if(is_punct(c)){
                 dfa_new_token(DFA_TOKEN_FILENAME, DFA_LEXEME_FILENAME, TOKEN_INTEGER);
                 dfa_string_conc(DFA_LEXEME_FILENAME, c);
+                li->point = 0;
                 *s = 6;
             }else{
                 charerror(c);

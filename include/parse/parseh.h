@@ -5,8 +5,6 @@
 #define PARSE_DETAILS_MAX DIGIT*10
 #define PARSE_ERROR_MESSAGE_SIZE 100
 
-#define DEFAULT_ERROR_MESSAGE "Invalid Syntax"
-
 
 extern char parsed_token[PARSE_DETAILS_MAX];
 extern int error_priority;
