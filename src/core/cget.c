@@ -16,7 +16,6 @@ char *get_nth_line(const char* filename, int n, const char *keyword){
                 line[line_len - 1] = '\0'; 
             }
             if(strcmp(line, keyword) == 0){
-                // printf("Checking keyword %s and %s\n", line, keyword);
                 break;
             }
         }

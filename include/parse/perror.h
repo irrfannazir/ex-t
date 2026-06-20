@@ -3,7 +3,6 @@
 #include "pdebug.h"
 #include <stdarg.h>
 
-int append_error_message(const char *msg);
 int num_lines(int size);
 
 #ifdef P_PARSE_DEBUG_MODE
