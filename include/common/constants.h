@@ -1,8 +1,7 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+/*      preprocessor conditions     */
 
-//preprocessor conditions
 
-#define DELETE_UNWANTED_FILES
-
+#ifndef DELETE_UNWANTED_FILES
+// #define DELETE_UNWANTED_FILES
 #endif
+

@@ -5,19 +5,6 @@
 #include "data.h"
 
 
-#define DEFAULT_TEXT "single\narray\n"
-
-
-void init_stat() {
-    FILE *fp = fopen(PARSE_DATATYPE_LIST_FILE_NAME, "w");
-    if ( !fp ) {
-        __pc_error__("Error while initiating datatype list file named %s", PARSE_DATATYPE_LIST_FILE_NAME);
-        return;
-    }
-    fputs(DEFAULT_TEXT, fp);
-    fclose(fp);
-}
-
 int fputs_with_newl(const char *filename, const char *str) {
     FILE *fp = fopen(filename, "a");
     if ( !fp) {

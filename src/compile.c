@@ -9,7 +9,11 @@
 void process_parametres(const char *ffn, const char *pfn, int *arr, int count){
     switch(arr[0]){
         case 0:
+        case 1:
             declaration_exec(pfn, arr, count);
+            break;
+        case 2:
+            assign_exec(pfn, arr, count);
             break;
         case 3:
             block_paradigm(pfn, "if", arr, count);

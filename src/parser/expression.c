@@ -39,6 +39,8 @@ int is_unidentified(struct Node *ptr){
             return 0;
         }else if(get_type(ptr -> start) == TOKEN_IDENTIFIER && is_declared_variable(ptr -> start)){
             return 0;
+        }else if(get_type(ptr -> start) == TOKEN_STRING){
+            return 0;
         }
         return 1;
     }

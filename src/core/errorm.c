@@ -26,13 +26,13 @@ int pushError(const char *fn, const float priority, const char *msg, ...){
 
 #define LINE_MAX 1024
 
-int printError(const char *filename, int mln){
+int printError(const char *filename, int lsn){
     FILE *fh = fopen(filename, "r");
     char line[LINE_MAX] = "";
     char msg[LINE_MAX] = "";
     float max = 0;
     float priority = 0;
-    printf("Error (%d): ", mln);
+    printf("Error (%d): ", lsn);
     while(fscanf(fh, "%f %[^\n]s", &priority, line) == 2){
         if(max < priority){
             strcpy(msg, line);

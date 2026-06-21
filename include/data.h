@@ -15,8 +15,9 @@
 
 //filename
 #define PARSING_HANDLING_FILE_NAME "parse.txt"
-#define DEFINED_IDENTIFIER_FILE_NAME "name_identifier.txt"
-#define PARSE_DATATYPE_LIST_FILE_NAME "grammar/t_stat.txt"
+#define DEFINED_IDENTIFIER_FILE_NAME "symtab.txt"
+#define PARSE_DATATYPE_LIST_FILE_NAME "grammar/datatype.txt"
+#define PARSE_KEYWORD_LIST_FILE_NAME  "grammar/keywords.txt"
 
 
 // flush

@@ -1,0 +1,14 @@
+if
+else
+for
+from
+to
+while
+print
+func
+declare
+jump
+indent
+func;
+set
+args

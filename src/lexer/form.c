@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 
-void write_lex_analyze(FILE *fhw, FILE *fh1, FILE *fh2){
+static inline void write_lex_analyze(FILE *fhw, FILE *fh1, FILE *fh2){
     int isnewline, lexValue;
     while (fscanf(fh1, "%d %d", &isnewline, &lexValue) == 2) {
         if (isnewline) {

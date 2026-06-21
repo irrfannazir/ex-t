@@ -1,8 +1,11 @@
-#ifndef SYNTAX_H
-#define SYNTAX_H
+#ifndef SYNTAX_DIRECTORY
+    // For handling syntax.txt
+    #define SYNTAX_DIRECTORY "grammar/syntax.txt"
+    #define SYNTAX_LINE_MAX 1024
 
-#define SYNTAX_DIRECTORY "grammar/syntax.txt"
-#define METHOD_DIRECTORY "grammar/method.txt"
 
-
+    // For handling method.txt
+    #define METHOD_DIRECTORY "grammar/method.txt"
+    #define METHOD_LINE_MAX 1024
+    
 #endif

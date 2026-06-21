@@ -62,6 +62,27 @@ char *read_nth_content_from_file(const char *filename, int n){
     return temp;
 }
 
+
+char *read_nth_content_werror(const char *filename, int n){
+    FILE *file = fopen(filename, "r");
+    char *temp = malloc(1024 * sizeof( char ));
+    if(!file){
+        __pc_error__("Error while reading file named %s\n", filename);
+        return NULL;
+    }
+
+    while(fgets(temp, 1024, file)) {
+        if(is_inline_comment(temp)) continue;
+
+        n--;
+
+        if (n < 0) break;
+    }
+
+    fclose(file);
+    return temp;
+}
+
 int delete_file(const char *filename){
     if(remove(filename) != 0){
         perror("Error on real-time data alteration");

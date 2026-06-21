@@ -109,8 +109,10 @@ static inline int dfa_char_analysis(char c, int *s, struct lexInfo *li){
             if(c == '.'){
                 if(li->point == 0){
                     li->point = 1;
+                    dfa_string_conc(DFA_LEXEME_FILENAME, c);
+                    break;
                 }else{
-                    lexerror(c);
+                    lexerror("Invalid floating value");
                     return 1;
                 }
             }

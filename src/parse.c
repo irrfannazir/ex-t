@@ -30,7 +30,7 @@ void parsef(const char *dest_filename) {
         index = get_index_from_lex(1);
 
         log_debug("Analysing %s and %s (%d)\n", word, get_token(index), index);
-        uint8_t flag = FLAGS_TO_INT(uint8_t,
+        unsigned char flag = FLAGS_TO_INT(unsigned char,
             get_token(index) == NULL,
             index == -1,
             word == NULL
@@ -69,6 +69,12 @@ void parsef(const char *dest_filename) {
 
 
         handle_identifier_declaration(index, method_line_num);
+        if (handle_undeclared_variable(index, method_line_num)){
+            printf("The variable %s is not declared", get_token(index));
+            skip_to_next_line(&method_line_num, &method_token_num);
+            dont_compile = 1;
+            continue;
+        }
 
         if (try_match_type(word, index, &method_token_num)) {
             continue;
