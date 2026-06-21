@@ -63,6 +63,6 @@ void report_method_error(int method_line_num) {
     if (msg != NULL) {
         printf("Error (%d): %s\n", num_lines(lsn), msg);
     } else {
-        printf("Error (%d): %s\n", num_lines(lsn), DEFAULT_ERROR_MESSAGE);
+        printf("Error (%d): %s\n", num_lines(lsn), "Invalid Syntax");
     }
 }
