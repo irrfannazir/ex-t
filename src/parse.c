@@ -69,13 +69,8 @@ void parsef(const char *dest_filename) {
 
 
         handle_identifier_declaration(index, method_line_num);
-        if (handle_undeclared_variable(index, method_line_num)){
-            printf("The variable %s is not declared", get_token(index));
-            skip_to_next_line(&method_line_num, &method_token_num);
-            dont_compile = 1;
-            continue;
-        }
-
+        handle_undeclared_variable(index, method_line_num);
+        
         if (try_match_type(word, index, &method_token_num)) {
             continue;
         }

@@ -20,9 +20,17 @@ static inline int is_variable_redefining(){
 
 int method_inline_function(int mln){
     if(working_identifier[0] != '\0'){
-        if(is_variable_redefining()){
+        if(is_variable_redefining() && strcmp(get_function_name_from_method(mln), "DECLARE(ID)") == 0){
             char temp[1024 + NAME_STRLEN];
             sprintf(temp, "Redefinition of %s", working_identifier);
+            push_error(temp);
+            return 1;
+        }
+        if(!is_variable_redefining() &&
+            ( get_function_name_from_method(mln) == NULL || strcmp(get_function_name_from_method(mln), "DECLARE(ID)") != 0)
+        ){
+            char temp[1024 + NAME_STRLEN];
+            sprintf(temp, "The variable %s is not declared", working_identifier);
             push_error(temp);
             return 1;
         }

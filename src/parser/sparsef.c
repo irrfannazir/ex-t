@@ -5,12 +5,28 @@
 #include "parse/parseh.h"
 #include "parse/comment.h"
 #include "parse/syntax.h"
+#include "parse/strh.h"
 #include "common/fileh.h"
 #include "common/pc_error.h"
 #include "common/errorm.h"
 #include "data.h"
 
-int is_declared_variable(int index);
+static inline int is_variable_declared(int index){
+    FILE *file = fopen(DEFINED_IDENTIFIER_FILE_NAME, "r");
+    char name[NAME_STRLEN];
+    char *var = get_token(index);
+    while(fgets(name, NAME_STRLEN, file)){
+        trim_newline(name);
+        if(strcmp(name, var) == 0){
+            free(var);
+            fclose(file);
+            return 1;
+        }
+    }
+    free(var);
+    fclose(file);
+    return 0;
+}
 
 void handle_identifier_declaration(int index, int method_line_num) {
     const char *syntax = read_nth_content_werror(METHOD_DIRECTORY, method_line_num);
@@ -19,20 +35,14 @@ void handle_identifier_declaration(int index, int method_line_num) {
     }
 }
 
-static inline int is_the_syntax_for_assigning(const char *syntax){
-    if (syntax == NULL) return 1;
-    if (strstr(syntax, "$$DECLARE(ID)") != NULL) return 0;
-    return 1;
-}
-
-
-int handle_undeclared_variable(int index, int method_line_num){
+void handle_undeclared_variable(int index, int method_line_num){
     const char *syntax = read_nth_content_werror(METHOD_DIRECTORY, method_line_num);
-    return
-        is_the_syntax_for_assigning(syntax) &&
+    if(
         get_type(index) == TOKEN_IDENTIFIER &&
-        !is_declared_variable(index)
-    ;
+        !is_variable_declared(index)
+    ){
+        strcpy(working_identifier, get_token(index));
+    }
 }
 
 void clear_identifier_buffer(){
