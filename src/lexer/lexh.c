@@ -3,11 +3,15 @@
 #include "data.h"
 
 int iskeyword(const char *str){
-    const char *keywords[] = {"if", "else", "new", "for", "while", "print"};
-    for (int i = 0; i < sizeof(keywords)/ sizeof(keywords[0]); i++) {
-        if (strcmp(keywords[i], str) == 0)
+    FILE *fh = fopen(PARSE_KEYWORD_LIST_FILE_NAME, "r");
+    char keyword[KEYWORD_MAX];
+    while(fgets(keyword, KEYWORD_MAX, fh)){
+        if (strcmp(keyword, str) == 0){
+            fclose(fh);
             return 1;
+        }
     }
+    fclose(fh);
     return 0;
 }
 

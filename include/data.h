@@ -11,6 +11,7 @@
 //limits
 #define TOKEN_STRING_MAX 500
 #define NAME_STRLEN 1024
+#define KEYWORD_MAX 1024
 #define DIGIT 20
 
 //filename

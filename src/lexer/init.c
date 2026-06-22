@@ -9,7 +9,6 @@
 #include "data.h"
 
 #define DEFAULT_TEXT "single\narray\n"
-#define KEYWORD_MAX 1024
 
 int token_to_type(char *syn);
 int does_tree_needed(char *word);
