@@ -4,30 +4,11 @@
 #include "parse/node.h"
 #include "parse/parseh.h"
 #include "parse/strh.h"
+#include "common/table.h"
 
 
 int is_declared_variable(int index){
-    FILE *file = fopen(DEFINED_IDENTIFIER_FILE_NAME, "r");
-    char name[NAME_STRLEN];
-    while(fgets(name, NAME_STRLEN, file)){
-        trim_newline(name);
-        if(strcmp(name, get_token(index)) == 0){
-            fclose(file);
-            return 1;
-        }
-    }
-    if(1){
-        int temp = error_priority;
-        error_priority = 0xFFFF;
-        error_priority = temp;
-    }
-    if(1){
-        char temp[1024];
-        sprintf(temp, "The variable %s didn't declared", get_token(index));
-        push_error(temp);
-    }
-    fclose(file);
-    return 0;
+    return vscan(DEFINED_IDENTIFIER_FILE_NAME, get_token(index)) != -1;
 }
 
 int is_unidentified(struct Node *ptr){

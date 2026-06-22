@@ -63,7 +63,7 @@ int skip_to_next_line(int *mln, int *mtn){
         printf("Error (%d): ", num_lines(lsn));
         dont_compile = 1;
     }else{
-        append_token_details(*mln);
+        append_token_details(*mln - count_inline_comment_until(*mln));
     }
     while(get_type(lsn) != TOKEN_EOF && get_type(lsn) != TOKEN_NULL){
         lsn++;

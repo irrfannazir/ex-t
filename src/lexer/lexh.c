@@ -1,18 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "data.h"
+#include "common/table.h"
 
 int iskeyword(const char *str){
-    FILE *fh = fopen(PARSE_KEYWORD_LIST_FILE_NAME, "r");
-    char keyword[KEYWORD_MAX];
-    while(fgets(keyword, KEYWORD_MAX, fh)){
-        if (strcmp(keyword, str) == 0){
-            fclose(fh);
-            return 1;
-        }
-    }
-    fclose(fh);
-    return 0;
+    return vscan(PARSE_KEYWORD_LIST_FILE_NAME, str) != -1;
 }
 
 int isdatatype(const char *str){

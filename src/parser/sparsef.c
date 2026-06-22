@@ -9,23 +9,11 @@
 #include "common/fileh.h"
 #include "common/pc_error.h"
 #include "common/errorm.h"
+#include "common/table.h"
 #include "data.h"
 
 static inline int is_variable_declared(int index){
-    FILE *file = fopen(DEFINED_IDENTIFIER_FILE_NAME, "r");
-    char name[NAME_STRLEN];
-    char *var = get_token(index);
-    while(fgets(name, NAME_STRLEN, file)){
-        trim_newline(name);
-        if(strcmp(name, var) == 0){
-            free(var);
-            fclose(file);
-            return 1;
-        }
-    }
-    free(var);
-    fclose(file);
-    return 0;
+    return vscan(DEFINED_IDENTIFIER_FILE_NAME, working_identifier) != -1;
 }
 
 void handle_identifier_declaration(int index, int method_line_num) {
