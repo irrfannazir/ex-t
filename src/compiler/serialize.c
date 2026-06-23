@@ -5,7 +5,7 @@
 
 
 char *serialize(int start, int end) {
-    size_t buffer_size = 1024; // Initial buffer size
+    size_t buffer_size = 1024; 
     char *result = malloc(buffer_size);
     if (!result) return NULL;
     result[0] = '\0';
@@ -14,8 +14,8 @@ char *serialize(int start, int end) {
         const char *token = get_token(i);
         if (!token) continue;
 
-        // Reallocate if necessary
-        size_t needed_size = strlen(result) + strlen(token) + 2; // +1 for space, +1 for \0
+        
+        size_t needed_size = strlen(result) + strlen(token) + 2; 
         if (needed_size > buffer_size) {
             buffer_size *= 2;
             result = realloc(result, buffer_size);

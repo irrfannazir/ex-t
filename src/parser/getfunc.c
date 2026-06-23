@@ -23,20 +23,20 @@ char *get_function_name_from_method(int line_number) {
         if (current_line == line_number) {
             fclose(file);
 
-            // Look for '$$'
+            
             char *comment_start = strstr(line, SYNTAX_FUNCTION_TOKEN);
             if (!comment_start) return NULL;
 
             comment_start += 2;
 
-            // Skip whitespace
+            
             while (*comment_start == ' ' || *comment_start == '\t') comment_start++;
 
-            // Remove trailing newline
+            
             char *newline = strchr(comment_start, '\n');
             if (newline) *newline = '\0';
 
-            // Allocation
+            
             char *result = malloc(strlen(comment_start) + 1);
             if (!result) return NULL;
 
@@ -48,5 +48,5 @@ char *get_function_name_from_method(int line_number) {
     }
 
     fclose(file);
-    return NULL;  // Line not found
+    return NULL;  
 }

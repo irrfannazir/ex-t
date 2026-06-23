@@ -4,9 +4,6 @@
 #include "common/pc_error.h"
 #include "data.h"
 
-#define LINE_MAX 256
-#define LEXEME_MAX (LINE_MAX - 2)
-
 int get_indentation(int index){
     FILE *file = fopen(LEX_HANDLING_FILE_NAME, "r");
     if ( !file ) {
@@ -14,14 +11,14 @@ int get_indentation(int index){
         return -1;
     }
 
-    char line[LINE_MAX];
-    char str[LEXEME_MAX];
+    char line[LEX_LINE_MAX];
+    char str[TOKEN_STRING_MAX];
     int num;
     int count = 0;
 
     while (fgets(line, sizeof(line), file)) {
         str[0] = '\0';
-        int fields = sscanf(line, "%d %99s", &num, str);
+        int fields = sscanf(line, "%d %499s", &num, str);
         if (fields == 2 && num == -1 && str[0] != '\0') {
             if(count == index){
                 fclose(file);
@@ -42,16 +39,14 @@ t_type get_type(int index){
         return TOKEN_NULL;
     }
     
-    char str[100];
-    char line[256];
+    char line[LEX_LINE_MAX];
     int num;
     int count = 0;
     t_type type;
     
-    while (fgets(line, sizeof(line), file)) {
-        str[0] = '\0';
+    while (fgets(line, LEX_LINE_MAX, file)) {
     
-        int fields = sscanf(line, "%d %99[^\n]", &num, str);
+        int fields = sscanf(line, "%d %*s", &num);
     
         if (fields >= 1 && num != -1) {
             if(count == index){
@@ -73,14 +68,14 @@ void get_type_token(int index, t_type *type, char *str){
         __pc_error__("Error while opening lex file named %s", LEX_HANDLING_FILE_NAME);
         return;
     }
-    char line[256];
+    char line[LEX_LINE_MAX];
     int num;
     int count = 1;
     
-    while (fgets(line, sizeof(line), file)) {
+    while (fgets(line, LEX_LINE_MAX, file)) {
         str[0] = '\0';
 
-        int fields = sscanf(line, "%d %99[^\n]", &num, str);
+        int fields = sscanf(line, "%d %499[^\n]", &num, str);
         
         if (fields >= 1 && num != -1) {
             if(count == index){

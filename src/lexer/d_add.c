@@ -28,7 +28,7 @@ char* fgets_by_nth_line(const char *filename, int n){
 
     while (fgets(line, sizeof(line), fp)) {
         if (count == n) {
-            // Remove trailing newline
+            
             line[strcspn(line, "\n")] = '\0';
             fclose(fp);
             return line;

@@ -12,14 +12,14 @@ char *get_token(int index) {
     }
 
     char *str = malloc(100 * sizeof( char )); 
-    char line[256];
     int num;
+    char line[LEX_LINE_MAX];
     int count = 0;
 
-    while (fgets(line, sizeof(line), file)) {
+    while (fgets(line, LEX_LINE_MAX, file)) {
         str[0] = '\0';
 
-        int fields = sscanf(line, "%d %99[^\n]", &num, str);
+        int fields = sscanf(line, "%d %499[^\n]", &num, str);
 
         if (fields >= 1 && num != -1) {
             if(count == index){

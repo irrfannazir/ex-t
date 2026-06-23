@@ -2,11 +2,9 @@
 #define PARSEH_H
 #include "data.h"
 
-#define PARSE_DETAILS_MAX DIGIT*10
 #define PARSE_ERROR_MESSAGE_SIZE 100
 
 
-extern char parsed_token[PARSE_DETAILS_MAX];
 extern int error_priority;
 extern int current_error_priority;
 extern char *error;
@@ -23,7 +21,6 @@ int skip_to_next_line(int *mln, int *mtn); // Moves to next line in lex
 int next_token(int *mln); // Moves to next token for both
 int skip_to_next_method(int *mln, int *mtn); // Moves to next method checking
 int token_to_type(char *syn);
-int append_token_details(int mln); //Saves the index in a file for parsing
 int does_tree_needed(char *word); //Is word contains and ending with ':'
 int parsing_tree_analysis(char *format, int start, int size); //Here is the function for parsing
 int fputs_with_newl(const char *filename, const char *str); //Append string into the filename
@@ -41,51 +38,6 @@ void clear_identifier_buffer();
 
 static inline int compare_the_word(char *word, char *token){
     return strcmp(word, token) == 0;
-}
-
-
-static inline void reverse(char str[], int length) {
-    int start = 0;
-    int end = length - 1;
-    while (start < end) {
-        char temp = str[start];
-        str[start] = str[end];
-        str[end] = temp;
-        start++;
-        end--;
-    }
-}
-
-
-static inline char* itoaf(int num, char* str, int base) {
-    int i = 0;
-    int isNegative = 0;
-
-    if (num == 0) {
-        str[i++] = '0';
-        str[i] = '\0';
-        return str;
-    }
-
-    if (num < 0 && base == 10) {
-        isNegative = 1;
-        num = -num;
-    }
-
-    while (num != 0) {
-        int rem = num % base;
-        str[i++] = (rem > 9) ? (rem - 10) + 'a' : rem + '0';
-        num /= base;
-    }
-
-    if (isNegative)
-        str[i++] = '-';
-
-    str[i] = '\0';
-
-    reverse(str, i);
-
-    return str;
 }
 
 

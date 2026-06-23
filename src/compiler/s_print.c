@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "compile/sh.h"
 
 typedef enum {
@@ -7,42 +8,44 @@ typedef enum {
 }p_prev;
 
 void print_statement(const char *ffn, const char *efn, int *arr, int count){
-    static char format[C_PROGRAM_MAX] = "";
-    static char para[C_PROGRAM_MAX] = "";
-    static char temp[C_PROGRAM_MAX*100] = "";
+    char format[C_PROGRAM_MAX] = "";
+    char para[C_PROGRAM_MAX] = "";
+    char temp[C_PROGRAM_MAX*100] = "";
     p_prev flag = NO;
     add_the_header(ffn, "stdio.h");
     // insert_newline_before_target(fn, INCLUDE_CURSOR);
     for(int i = arr[1]; i < arr[2]; i++){
-        if(strcmp(get_token(i), ",") == 0){
+        char *token = get_token(i);
+        if(strcmp(token, ",") == 0){
             flag = NO;
         }else if(get_type(i) == TOKEN_STRING){
-            strcat(format, get_token(i));
+            strcat(format, token);
         }else if(get_type(i) == TOKEN_IDENTIFIER || get_type(i) == TOKEN_INTEGER){
             if( strcmp(para, "") == 0 ) strcat(para, ",");
             switch(flag){
                 case NO:
                     strcat(format, "%d");
-                    strcat(para, get_token(i));
+                    strcat(para, token);
                     break;
                 case TI:
                     strcat(format, "%d");
                     strcat(para, ", ");
-                    strcat(para, get_token(i));
+                    strcat(para, token);
                     break;
                 case TO:
-                    strcat(para, get_token(i));
+                    strcat(para, token);
                     break;
             }
             flag = TI;
         }else if(get_type(i) == TOKEN_OPERATOR){
             switch(flag){
                 case TI:
-                    strcat(para, get_token(i));
+                    strcat(para, token);
                     break;
             }
             flag = TO;
         }
+        free(token);
     }
     sprintf(temp, "printf(\"%s\"%s);", format, para);
     insert_before_target(efn, temp, PGM_CURSOR);

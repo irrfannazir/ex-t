@@ -15,12 +15,12 @@ int *line_to_int_array(const char *line, int *count) {
     const char *p = line;
 
     while (*p) {
-        // Skip whitespace
+        
         while (*p == ' ' || *p == '\t') p++;
 
         if (*p == '\0' || *p == '\n') break;
 
-        // Read an integer
+        
         if (sscanf(p, "%d", &value) == 1) {
             if (*count >= capacity) {
                 capacity *= 2;
@@ -30,10 +30,10 @@ int *line_to_int_array(const char *line, int *count) {
             arr[*count] = value;
             (*count)++;
 
-            // Move p past this number
+            
             while (*p && *p != ' ' && *p != '\t' && *p != '\n') p++;
         } else {
-            // Invalid token, skip it
+            
             while (*p && *p != ' ' && *p != '\t' && *p != '\n') p++;
         }
     }

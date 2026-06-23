@@ -4,7 +4,7 @@
 
 void assign_exec(const char *dfn, int *arr, int count){
     const char *id = get_token(arr[ORDER_ID]);
-    static char temp[C_PROGRAM_MAX] = "";
+    char temp[C_PROGRAM_MAX] = "";
     sprintf(
         temp, 
         "%s = %s;",

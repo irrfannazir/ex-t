@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "parse/node.h"
-#include "parse/parseh.h"
 #include "parse/strh.h"
 #include "common/table.h"
-
+#include "data.h"
 
 int is_declared_variable(int index){
     return vscan(DEFINED_IDENTIFIER_FILE_NAME, get_token(index)) != -1;
@@ -33,16 +32,16 @@ struct Node *find_next_expression(struct Node* root) {
     if ( !root ) return NULL;
     if (root -> data == 0 && root -> size > 1 && root -> right == NULL && root -> left == NULL) return root;
 
-    // Create an auxiliary queue for level order traversal
-    struct Node* queue[100];  // Assuming a max tree size of 100 for simplicity
+    
+    struct Node* queue[100];  
     int front = 0, rear = 0;
 
-    // Enqueue root
+    
     queue[rear++] = root;
     while (front < rear) {
         struct Node* current = queue[front++];
 
-        // Add the current node's value to the array
+        
 
         if(
             current -> data == EXPRESSION
@@ -57,7 +56,7 @@ struct Node *find_next_expression(struct Node* root) {
         }
         (index)++;
 
-        // Enqueue left and right children if they exist
+        
         if (current->right != NULL) {
             queue[rear++] = current->right;
         }

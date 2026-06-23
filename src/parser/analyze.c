@@ -3,10 +3,12 @@
 #include <string.h>
 #include "parse/tree.h"
 #include "parse/syntax.h"
-#include "parse/parseh.h"
 #include "parse/strh.h"
 #include "common/fileh.h"
+#include "data.h"
 
+int compare_the_word(char *word, char *token);
+int does_tree_needed(char *word); //Is word contains and ending with ':'
 
 static inline int count_tree_needed_words(char *line){
     int count = 0;
@@ -138,12 +140,11 @@ int analyze_expression(struct Node *ptr){
     
     ln++;
     while(syn_line != NULL){
-        int status;
         if(syn_line[0] == '\n'){
             free(syn_line);
             return 1;
         }
-        status = check_line(ptr, syn_line);
+        const int status = check_line(ptr, syn_line);
         if(status){
             syn_line = get_nth_line(SYNTAX_DIRECTORY, ln, ptr -> format);
             ln++;

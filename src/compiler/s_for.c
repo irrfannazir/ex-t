@@ -3,7 +3,7 @@
 
 
 void for_condition(const char *fn, int *arr, int count){
-    static char temp[C_PROGRAM_MAX] = "";
+    char temp[C_PROGRAM_MAX] = "";
     const char *datatype = find_datatype(arr[ORDER_DATATYPE]);
     const char *id = get_token(arr[ORDER_ID]);
     const char *from = serialize(arr[ORDER_FROM_START], arr[ORDER_FROM_END]);

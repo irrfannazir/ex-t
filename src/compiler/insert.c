@@ -12,7 +12,7 @@ void insert_before_target(const char *filename, const char *new_content, const c
         return;
     }
 
-    // Dynamically build the file content line by line
+    
     size_t buffer_size = 4096;
     char *buffer = malloc(buffer_size);
     if (!buffer) {
@@ -48,7 +48,7 @@ void insert_before_target(const char *filename, const char *new_content, const c
         return;
     }
 
-    // Reopen file for writing
+    
     file = fopen(filename, "w");
     if (!file) {
         fprintf(stderr, "Error while writing the file %s for inserting the target\n", filename);
@@ -56,17 +56,17 @@ void insert_before_target(const char *filename, const char *new_content, const c
         return;
     }
 
-    // Write content before target
+    
     size_t prefix_len = pos - buffer;
     char saved = buffer[prefix_len];
     buffer[prefix_len] = '\0';
     fputs(buffer, file);
     buffer[prefix_len] = saved;
 
-    // Insert new content
+    
     fputs(new_content, file);
 
-    // Write the rest of the original content
+    
     fputs(pos, file);
 
     fclose(file);

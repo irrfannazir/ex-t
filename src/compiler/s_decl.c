@@ -1,11 +1,13 @@
 #define DECLARATION
+#include <stdlib.h>
 #include "compile/sh.h"
 
 
 void declaration_exec(const char *fn, int *arr, int count){
+    if(count < 3) return;
     const char *datatype = find_datatype(arr[ORDER_DATATYPE]);
     const char *id = get_token(arr[ORDER_ID]);
-    static char temp[C_PROGRAM_MAX] = "";
+    char temp[C_PROGRAM_MAX] = "";
         if(count == 3){
         sprintf(
             temp, 
@@ -14,13 +16,16 @@ void declaration_exec(const char *fn, int *arr, int count){
             id
         );
     }else if (count > 3){
+        const char *expression = serialize(arr[ORDER_EXPRESSION_START], arr[ORDER_EXPRESSION_END]);
         sprintf(
             temp, 
             "%s %s = %s;",
             datatype,
             id, 
-            serialize(arr[ORDER_EXPRESSION_START], arr[ORDER_EXPRESSION_END])
+            expression
         );
+        free((char *)expression);
     }
+    free((char *)id);
     insert_before_target(fn, temp, PGM_CURSOR);
 }

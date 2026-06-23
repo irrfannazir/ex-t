@@ -4,11 +4,13 @@
 #include "parse/syntax.h"
 #include "parse/comment.h"
 #include "parse/perror.h"
-#include "parse/parseh.h"
 #include "common/pc_error.h"
 #include "common/errorm.h"
 
 #define MAX_LINE_LEN 1024
+
+extern int lsn;
+
 
 char *get_error_message_from_method(int line_number) {
     FILE *file = fopen(METHOD_DIRECTORY, "r");
@@ -26,7 +28,7 @@ char *get_error_message_from_method(int line_number) {
         if (current_line == line_number) {
             fclose(file);
 
-            // Look for '//'
+            
             char *comment_start = strstr(line, SYNTAX_COMMENT_TOKEN);
             if (!comment_start) {
                 return NULL;
@@ -34,16 +36,16 @@ char *get_error_message_from_method(int line_number) {
 
             comment_start += 2;
 
-            // Skip whitespace
+            
             while (*comment_start == ' ' || *comment_start == '\t') {
                 comment_start++;
             }
 
-            // Remove trailing newline
+            
             char *newline = strchr(comment_start, '\n');
             if (newline) *newline = '\0';
 
-            // Allocation
+            
             char *result = malloc(strlen(comment_start) + 1);
             if (!result) return NULL;
 
@@ -55,7 +57,7 @@ char *get_error_message_from_method(int line_number) {
     }
 
     fclose(file);
-    return NULL;  // Line not found
+    return NULL;  
 }
 
 void report_method_error(int method_line_num) {

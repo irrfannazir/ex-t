@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "parse/parseh.h"
+#include "parse/nexth.h"
 #include "parse/perror.h"
 #include "parse/syntax.h"
 #include "parse/comment.h"
@@ -40,7 +41,7 @@ static inline int count_inline_comment_until(int mln){
     int current_line = 0;
     int inline_comment_count = 0;
 
-    // Read lines until reaching the desired one
+    
     while (fgets(line, sizeof(line), file)) {
         if(is_inline_comment(line)) continue;
         if(is_inline_comment(strstr(line, SYNTAX_COMMENT_TOKEN))) inline_comment_count++;        
@@ -49,7 +50,7 @@ static inline int count_inline_comment_until(int mln){
     }
 
     fclose(file);
-    return 0; // Line not found
+    return 0; 
 }
 
 int skip_to_next_line(int *mln, int *mtn){
@@ -95,7 +96,7 @@ int skip_to_next_method(int *mln, int *mtn){
     return 0;
 }
 
-//To count number of lines
+
 int num_lines(int size){
     int res = 0;
     for(int i = 0;i < size; i++){

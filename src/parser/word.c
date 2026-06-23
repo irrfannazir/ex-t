@@ -17,7 +17,7 @@ char *get_word_from_method(int line_number, int token_number) {
     char line[MAX_LINE_LENGTH];
     int current_line = 0;
 
-    // Read lines until reaching the desired one
+    
     while (fgets(line, sizeof(line), file)) {
         if(is_inline_comment(line)){
             continue;
@@ -25,13 +25,13 @@ char *get_word_from_method(int line_number, int token_number) {
         if (current_line == line_number) {
             fclose(file);
 
-            // Tokenize the line by space
+            
             char *token = strtok(line, " \n");
             int current_token = 0;
 
             while (token) {
                 if (current_token == token_number) {
-                    // Allocate memory and return a copy of the token
+                    
                     char *result = malloc(strlen(token) + 1);
                     if (result) {
                         strcpy(result, token);
@@ -40,20 +40,20 @@ char *get_word_from_method(int line_number, int token_number) {
                         }
                         return result;
                     } else {
-                        return NULL; // malloc failed
+                        return NULL; 
                     }
                 }
                 token = strtok(NULL, " \n");
                 current_token++;
             }
 
-            return NULL; // Token not found
+            return NULL; 
         }
         current_line++;
     }
 
     fclose(file);
-    return NULL; // Line not found
+    return NULL; 
 }
 
 
