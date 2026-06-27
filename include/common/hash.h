@@ -14,7 +14,3 @@ static unsigned long long hash_str(const char *s) {
     }
     return h;
 }
-
-static int is_empty_or_tombstone(const Entry *e) {
-    return e->name[0] == '\0' || e->name[0] == DELETED_MARKER[0];
-}

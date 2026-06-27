@@ -1,3 +1,4 @@
+#define PRINT_STATEMENT
 #include <stdlib.h>
 #include "compile/sh.h"
 
@@ -14,7 +15,7 @@ void print_statement(const char *ffn, const char *efn, int *arr, int count){
     p_prev flag = NO;
     add_the_header(ffn, "stdio.h");
     // insert_newline_before_target(fn, INCLUDE_CURSOR);
-    for(int i = arr[1]; i < arr[2]; i++){
+    for(int i = arr[ORDER_PRINT_START]; i < arr[ORDER_PRINT_END]; i++){
         char *token = get_token(i);
         if(strcmp(token, ",") == 0){
             flag = NO;

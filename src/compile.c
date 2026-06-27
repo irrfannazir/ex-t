@@ -43,9 +43,9 @@ void add_the_program(const char *pfn, const char *ffn, const char *efn){
     i++;
     while(parsed_data != NULL){
         trim_newline(parsed_data);
-        if(get_indentation(i - 2) < get_indentation(i - 1)){
+        if(get_indentation(i - 1) < get_indentation(i)){
             if(indent_tab_number == 0){
-                indent_tab_number = get_indentation(i - 1) - get_indentation(i - 2);
+                indent_tab_number = get_indentation(i) - get_indentation(i - 1);
             }
         }
         int count;
@@ -53,7 +53,7 @@ void add_the_program(const char *pfn, const char *ffn, const char *efn){
         process_parametres(ffn, efn, arr, count);
         parsed_data = get_nth_line(PARSING_HANDLING_FILE_NAME, i, NULL);
         i++;
-        if( ( get_indentation(i - 3) - indent_tab_number == get_indentation(i - 2) ) && indent_tab_number != 0){
+        if( ( get_indentation(i - 2) - indent_tab_number == get_indentation(i - 1) ) && indent_tab_number != 0){
             remove_string_from_file(efn, PGM_CURSOR, 0);
         }
         free(arr);

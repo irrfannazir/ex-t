@@ -30,7 +30,7 @@ int print_error();
 
 void report_method_error(int method_line_num);
 void handle_identifier_declaration(int index, int method_line_num);
-void handle_undeclared_variable(int index, int method_line_num);
+void handle_undeclared_variable(int index);
 int try_match_type(char *word, int index, int *method_token_num);
 int try_match_word(char *word, int index, int *method_token_num);
 int handle_syntax_tree(char *word, int index, int *method_line_num, int *method_token_num);

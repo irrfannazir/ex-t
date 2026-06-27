@@ -69,7 +69,7 @@ void parsef(const char *dest_filename) {
 
 
         handle_identifier_declaration(index, method_line_num);
-        handle_undeclared_variable(index, method_line_num);
+        handle_undeclared_variable(index);
         
         if (try_match_type(word, index, &method_token_num)) {
             continue;

@@ -28,6 +28,7 @@ int pushError(const char *fn, const float priority, const char *msg, ...){
 
 int printError(const char *filename, int lsn){
     FILE *fh = fopen(filename, "r");
+    if (!fh) return 1;
     char line[LINE_MAX] = "";
     char msg[LINE_MAX] = "";
     float max = 0;
@@ -50,4 +51,5 @@ int printError(const char *filename, int lsn){
     fclose(fh);
     fh = fopen(filename, "w");
     fclose(fh);
+    return 0;
 }

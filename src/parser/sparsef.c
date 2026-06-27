@@ -23,8 +23,7 @@ void handle_identifier_declaration(int index, int method_line_num) {
     }
 }
 
-void handle_undeclared_variable(int index, int method_line_num){
-    const char *syntax = read_nth_content_werror(METHOD_DIRECTORY, method_line_num);
+void handle_undeclared_variable(int index){
     if(
         get_type(index) == TOKEN_IDENTIFIER &&
         !is_variable_declared(index)
