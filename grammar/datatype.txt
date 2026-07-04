@@ -1,2 +1,2 @@
-single
-array
+single allocates memory of 4 bytes and saves as signed integer format
+array allocates memory of 4 and saves the address.

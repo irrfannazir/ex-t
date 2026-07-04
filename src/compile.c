@@ -55,6 +55,7 @@ void add_the_program(const char *pfn, const char *ffn, const char *efn){
         i++;
         if( ( get_indentation(i - 2) - indent_tab_number == get_indentation(i - 1) ) && indent_tab_number != 0){
             remove_string_from_file(efn, PGM_CURSOR, 0);
+            fputs_with_newl(PARSED_INFORMATION, "end of the finally mentioned block\n");
         }
         free(arr);
     }
@@ -65,6 +66,7 @@ int compilef(const char *src_filename, const char *final_filename, const char *d
     if(dont_compile) return 1;
     printf("Compiling the program.\n");
     create_file(dest_filename, DEFAULT_PROGRAM);
+    create_file(PARSED_INFORMATION, "");
     add_the_program(src_filename, final_filename, dest_filename);
     printf("********The output program implemented in C programming Language********\n\n");
     remove_string_from_file(dest_filename, PGM_CURSOR, 1);

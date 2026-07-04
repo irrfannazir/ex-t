@@ -18,5 +18,17 @@ void for_condition(const char *fn, int *arr, int count){
         id,
         PGM_CURSOR
     );
+    char psuedo[PSUEDO_CODE_MAX];
+    char descr[PSUEDO_CODE_MAX];
+    get_description(datatype, descr);
+    sprintf(psuedo, 
+        "Start a for loop block by iterating a variable named"
+        "%s with datatype which %s. Iterate from the value (%s) to the value (%s).",
+        id,
+        descr,
+        from,
+        to
+    );
     insert_before_target(fn, temp, PGM_CURSOR);
+    fputs_with_newl(PARSED_INFORMATION, psuedo);
 }

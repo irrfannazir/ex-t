@@ -14,6 +14,9 @@ void block_paradigm(const char *fn, char *keyword, int *arr, int count){
     char temp[C_PROGRAM_MAX] = "";
     sprintf(temp, "%s(%s){%s}", keyword, expression, PGM_CURSOR);
     insert_before_target(fn, temp, PGM_CURSOR);
+    char psuedo[PSUEDO_CODE_MAX];
+    sprintf(psuedo, "Start an %s statement block with condition (%s)\n", keyword, expression);
+    fputs_with_newl(PARSED_INFORMATION, psuedo);
 }
 
 

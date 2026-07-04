@@ -17,7 +17,7 @@ int isdatatype(const char *str){
     char name[256];
     
     while (fgets(name, sizeof(name), fp)) {
-        name[strcspn(name, "\n")] = '\0';    
+        name[strcspn(name, " \n")] = '\0';    
         if (strcmp(name, str) == 0)
             return 1;
     }

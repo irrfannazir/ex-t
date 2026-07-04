@@ -9,7 +9,8 @@
 #include "parse/strh.h"
 #include "data.h"
 
-#define DEFAULT_TEXT "single\narray\n"
+#define DEFAULT_TEXT "single allocates memory of 4 bytes and saves as signed integer format\n" \
+        "array allocates memory of 4 and saves the address.\n"
 
 int token_to_type(char *syn);
 int does_tree_needed(char *word);
