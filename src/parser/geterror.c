@@ -49,7 +49,7 @@ char *get_error_message_from_method(int line_number) {
             char *result = malloc(strlen(comment_start) + 1);
             if (!result) return NULL;
 
-            strcpy(result, comment_start);
+            memcpy(result, comment_start, strlen(comment_start) + 1);
             return result;
         }
 
@@ -61,10 +61,11 @@ char *get_error_message_from_method(int line_number) {
 }
 
 void report_method_error(int method_line_num) {
-    const char *msg = get_error_message_from_method(method_line_num);
+    char *msg = get_error_message_from_method(method_line_num);
     if (msg != NULL) {
         printf("Error (%d): %s\n", num_lines(lsn), msg);
     } else {
         printf("Error (%d): %s\n", num_lines(lsn), "Invalid Syntax");
     }
+    free(msg);
 }

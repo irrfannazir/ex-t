@@ -6,6 +6,13 @@
 
 char parsed_token[PARSE_DETAILS_MAX];
 
+static int append_to_parsed_token(const char *text){
+    size_t used = strlen(parsed_token);
+    if (used >= sizeof(parsed_token)) return 1;
+    int written = snprintf(parsed_token + used, sizeof(parsed_token) - used, "%s", text);
+    return written < 0 || (size_t)written >= sizeof(parsed_token) - used;
+}
+
 int append_token_details(int mln){
     if(strcmp(parsed_token, "") == 0){
         return 0;
@@ -17,13 +24,13 @@ int append_token_details(int mln){
     }
     fprintf(file, "%d %s\n", mln, parsed_token);
     fclose(file);
-    strcpy(parsed_token, "");
+    parsed_token[0] = '\0';
     return 0;
 }
 
 void push_to_parse_string(int index){
     char temp[DIGIT];
     itoaf(index, temp, 10);
-    strcat(parsed_token, temp);
-    strcat(parsed_token, " ");
+    if (append_to_parsed_token(temp)) return;
+    append_to_parsed_token(" ");
 }

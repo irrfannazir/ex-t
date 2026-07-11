@@ -11,11 +11,11 @@
 
 char working_identifier[NAME_STRLEN] = "";
 
-void parsef(const char *dest_filename) {
+int parsef(const char *dest_filename) {
     printf("Parsing the tokens.\n");
-    create_file(dest_filename, NULL);
-    create_file(DEFINED_IDENTIFIER_FILE_NAME, "");
-    create_file(ERROR_HANDLING_FILENAME, "");
+    if (create_file(dest_filename, NULL)) return 1;
+    if (create_file(DEFINED_IDENTIFIER_FILE_NAME, "")) return 1;
+    if (create_file(ERROR_HANDLING_FILENAME, "")) return 1;
 
     int method_line_num = 0;
     int method_token_num = 0;
@@ -28,15 +28,16 @@ void parsef(const char *dest_filename) {
     while (1) {
         word = get_word_from_method(method_line_num, method_token_num);
         index = get_index_from_lex(1);
+        char *token = get_token(index);
 
-        log_debug("Analysing %s and %s (%d)\n", word, get_token(index), index);
+        log_debug("Analysing %s and %s (%d)\n", word, token, index);
         unsigned char flag = FLAGS_TO_INT(unsigned char,
-            get_token(index) == NULL,
+            token == NULL,
             index == -1,
             word == NULL
         );
         log_debug("Flag: %d%d%d\n",
-            get_token(index) == NULL,
+            token == NULL,
             index == -1,
             word == NULL
         );
@@ -47,24 +48,34 @@ void parsef(const char *dest_filename) {
                     log_debug("\tSkipping to next line.\n");
                     printError(ERROR_HANDLING_FILENAME, num_lines(lsn));
                     skip_to_next_line(&method_line_num, &method_token_num);
+                    free(token);
+                    free(word);
                     continue;
                 }
                 report_method_error(method_line_num);
                 skip_to_next_method(&method_line_num, &method_token_num);
+                free(token);
+                free(word);
                 continue;
             case 0b110:
                 log_debug("\tSkipping to next method\n");
-                pushError(ERROR_HANDLING_FILENAME, method_line_num, "%s is unexpected", strdup(get_token(index)));
+                pushError(ERROR_HANDLING_FILENAME, method_line_num, "%s is unexpected", token ? token : "");
                 skip_to_next_method(&method_line_num, &method_token_num);
+                free(token);
+                free(word);
                 continue;
             case 0b111:
                 log_debug("\tSkipping to next line.\n");
                 skip_to_next_line(&method_line_num, &method_token_num);
+                free(token);
+                free(word);
                 continue;
             case 0b100:
             case 0b101:
                 log_debug("End of parsing\n");
-                return;
+                free(token);
+                free(word);
+                return dont_compile ? 1 : 0;
         }
 
 
@@ -72,13 +83,19 @@ void parsef(const char *dest_filename) {
         handle_undeclared_variable(index);
         
         if (try_match_type(word, index, &method_token_num)) {
+            free(token);
+            free(word);
             continue;
         }
         if (try_match_word(word, index, &method_token_num)) {
+            free(token);
+            free(word);
             continue;
         }
         if (does_tree_needed(word)) {
             if (handle_syntax_tree(word, index, &method_line_num, &method_token_num)) {
+                free(token);
+                free(word);
                 continue;
             }
         } else {
@@ -87,7 +104,10 @@ void parsef(const char *dest_filename) {
         }
 
         clear_identifier_buffer();
+        free(token);
+        free(word);
     }
 
+    return dont_compile ? 1 : 0;
 }
 

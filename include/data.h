@@ -18,19 +18,25 @@
 #define NAME_STRLEN 1024
 
 //filename
-#define PARSING_HANDLING_FILE_NAME    "parse.txt"
-#define PARSED_INFORMATION            "parse.info"
-#define DEFINED_IDENTIFIER_FILE_NAME  "symtab.bin"
+#define GENERATED_DIRECTORY           "build"
+#define PARSING_HANDLING_FILE_NAME    GENERATED_DIRECTORY "/parse.txt"
+#define PARSED_INFORMATION            GENERATED_DIRECTORY "/parse.info"
+#define DEFINED_IDENTIFIER_FILE_NAME  GENERATED_DIRECTORY "/symtab.bin"
 #define PARSE_DATATYPE_LIST_FILE_NAME "grammar/datatype.txt"
 #define PARSE_KEYWORD_LIST_FILE_NAME  "grammar/keywords.bin"
 
 
 // flush
 #ifdef DELETE_UNWANTED_FILES
-  static char *unwanted_filenames[] = {
-    "lex.txt",
+  static const char *unwanted_filenames[] = {
+    GENERATED_DIRECTORY "/lex.txt",
+    GENERATED_DIRECTORY "/dfa_lexeme.txt",
+    GENERATED_DIRECTORY "/dfa_token.txt",
+    GENERATED_DIRECTORY "/pgm.c",
+    GENERATED_DIRECTORY "/error.txt",
     PARSING_HANDLING_FILE_NAME,
     DEFINED_IDENTIFIER_FILE_NAME,
+    PARSED_INFORMATION,
   };
 #endif
   

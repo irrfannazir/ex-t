@@ -74,13 +74,14 @@ static inline void assign_last_word(struct Node *ptr, char *word, int nos) {
 }
 
 static inline int find_matching_token(int ci, char *end) {
-    while (
-        get_token(ci) != NULL &&
-        !compare_the_word(end, get_token(ci))
-    ) {
+    while (1) {
+        char *token = get_token(ci);
+        if (token == NULL) return ci;
+        int matched = compare_the_word(end, token);
+        free(token);
+        if (matched) return ci;
         ci++;
     }
-    return ci;
 }
 
 static inline int check_line(struct Node *ptr, char *syn_line) {
@@ -118,9 +119,14 @@ static inline int check_line(struct Node *ptr, char *syn_line) {
                 return 0;
             }
         } 
-        else if (!compare_the_word(word, get_token(ci))) {
-            free(copy);
-            return 1;
+        else {
+            char *token = get_token(ci);
+            int matched = compare_the_word(word, token);
+            free(token);
+            if (!matched) {
+                free(copy);
+                return 1;
+            }
         }
 
         word = strtok(NULL, " \t\n");
@@ -146,6 +152,7 @@ int analyze_expression(struct Node *ptr){
         }
         const int status = check_line(ptr, syn_line);
         if(status){
+            free(syn_line);
             syn_line = get_nth_line(SYNTAX_DIRECTORY, ln, ptr -> format);
             ln++;
         }else{

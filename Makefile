@@ -38,7 +38,7 @@ else
     EXE =
 endif
 
-$(OBJDIR)/%.o: %.c
+$(OBJDIR)/%.o: %.c include
 	@$(MKDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 

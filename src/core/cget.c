@@ -7,12 +7,16 @@ char *get_nth_line(const char* filename, int n, const char *keyword){
     if (!file) return NULL;
     const int size = sizeof(char) * 256;
     char *line = malloc(size);
+    if (!line) {
+        fclose(file);
+        return NULL;
+    }
     if(keyword != NULL){
         while(fgets(line, size, file)){
             int line_len = strlen(line);
-            if(line[line_len - 1] == '\n' && line[line_len - 2] == ':'){
+            if(line_len >= 2 && line[line_len - 1] == '\n' && line[line_len - 2] == ':'){
                 line[line_len - 2] = '\0'; 
-            }else if(line[line_len - 1] == '\n'){
+            }else if(line_len >= 1 && line[line_len - 1] == '\n'){
                 line[line_len - 1] = '\0'; 
             }
             if(strcmp(line, keyword) == 0){
@@ -29,6 +33,7 @@ char *get_nth_line(const char* filename, int n, const char *keyword){
         n--;
     }
     fclose(file);
+    free(line);
     return NULL;
 }
 

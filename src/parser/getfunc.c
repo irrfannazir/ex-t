@@ -40,7 +40,7 @@ char *get_function_name_from_method(int line_number) {
             char *result = malloc(strlen(comment_start) + 1);
             if (!result) return NULL;
 
-            strcpy(result, comment_start);
+            memcpy(result, comment_start, strlen(comment_start) + 1);
             return result;
         }
 

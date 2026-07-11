@@ -74,8 +74,11 @@ int skip_to_next_line(int *mln, int *mtn){
     *mtn = 0;
     *mln = 0;
     print_error();
-    strcpy(parsed_token, "");
-    if(get_token(lsn) == NULL || get_type(lsn) != TOKEN_NULL){
+    parsed_token[0] = '\0';
+    char *token = get_token(lsn);
+    int no_token = token == NULL;
+    free(token);
+    if(no_token || get_type(lsn) != TOKEN_NULL){
         return 1;
     }
     return 0;
@@ -92,7 +95,7 @@ int skip_to_next_method(int *mln, int *mtn){
     (*mln)++;
     *mtn = 0;
     current_error_priority = error_priority;
-    strcpy(parsed_token, "");
+    parsed_token[0] = '\0';
     return 0;
 }
 

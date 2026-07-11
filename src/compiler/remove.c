@@ -12,9 +12,9 @@ void remove_string_from_file(const char *filename, const char *target, int isloo
         return;
     }
 
-    FILE *temp = fopen("tempfile.txt", "w");
+    FILE *temp = fopen("build/tempfile.txt", "w");
     if (!temp) {
-        __pc_error__("Error while creating the temporary file for removing the string from the file tempfile.txt");
+        __pc_error__("Error while creating the temporary file for removing the string from the file build/tempfile.txt");
         fclose(src);
         return;
     }
@@ -46,5 +46,5 @@ void remove_string_from_file(const char *filename, const char *target, int isloo
 
     
     if (remove(filename) != 0) __pc_error__("Error while removing the file named %s", filename);
-    if (rename("tempfile.txt", filename) != 0) __pc_error__("Error while renaming the file named tempfile.txt to %s", filename);
+    if (rename("build/tempfile.txt", filename) != 0) __pc_error__("Error while renaming the file named build/tempfile.txt to %s", filename);
 }

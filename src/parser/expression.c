@@ -7,7 +7,10 @@
 #include "data.h"
 
 int is_declared_variable(int index){
-    return vscan(DEFINED_IDENTIFIER_FILE_NAME, get_token(index)) != -1;
+    char *token = get_token(index);
+    int declared = token && vscan(DEFINED_IDENTIFIER_FILE_NAME, token) != -1;
+    free(token);
+    return declared;
 }
 
 int is_unidentified(struct Node *ptr){

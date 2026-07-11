@@ -28,15 +28,18 @@ void insert_before_target(const char *filename, const char *new_content, const c
         size_t line_len = strlen(line);
         while (total_len + line_len + 1 > buffer_size) {
             buffer_size *= 2;
-            buffer = realloc(buffer, buffer_size);
-            if (!buffer) {
+            char *resized = realloc(buffer, buffer_size);
+            if (!resized) {
                 perror("Reallocation failed");
+                free(buffer);
                 fclose(file);
                 return;
             }
+            buffer = resized;
         }
-        strcat(buffer, line);
+        memcpy(buffer + total_len, line, line_len);
         total_len += line_len;
+        buffer[total_len] = '\0';
     }
 
     fclose(file);

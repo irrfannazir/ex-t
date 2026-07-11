@@ -20,8 +20,9 @@ void push_error(const char *temp){
     error = malloc( (strlen(temp) + 1)*sizeof(char) );
     if(error == NULL){
         perror("Allocation failed for error.\n");
+        return;
     }
-    strcpy(error, temp);
+    memcpy(error, temp, strlen(temp) + 1);
 }
 
 void print_error(){

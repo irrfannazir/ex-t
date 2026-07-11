@@ -17,10 +17,15 @@ static inline int is_variable_declared(int index){
 }
 
 void handle_identifier_declaration(int index, int method_line_num) {
-    const char *syntax = read_nth_content_werror(METHOD_DIRECTORY, method_line_num);
+    char *syntax = read_nth_content_werror(METHOD_DIRECTORY, method_line_num);
     if (syntax && get_type(index) == TOKEN_IDENTIFIER && strstr(syntax, SYNTAX_FUNCTION_TOKEN) != NULL){
-        strcpy(working_identifier, get_token(index));
+        char *token = get_token(index);
+        if (token) {
+            snprintf(working_identifier, sizeof(working_identifier), "%s", token);
+            free(token);
+        }
     }
+    free(syntax);
 }
 
 void handle_undeclared_variable(int index){
@@ -28,7 +33,11 @@ void handle_undeclared_variable(int index){
         get_type(index) == TOKEN_IDENTIFIER &&
         !is_variable_declared(index)
     ){
-        strcpy(working_identifier, get_token(index));
+        char *token = get_token(index);
+        if (token) {
+            snprintf(working_identifier, sizeof(working_identifier), "%s", token);
+            free(token);
+        }
     }
 }
 
@@ -53,7 +62,10 @@ int try_match_type(char *word, int index, int *method_token_num) {
 }
 
 int try_match_word(char *word, int index, int *method_token_num) {
-    if (compare_the_word(word, get_token(index))) {
+    char *token = get_token(index);
+    int matched = compare_the_word(word, token);
+    free(token);
+    if (matched) {
         log_debug("\tSimiliar word found\n");
         next_token(method_token_num);
         return 1;
@@ -83,19 +95,24 @@ int handle_syntax_tree(char *word, int index,
         // Search for the ending keyword
         while (index != -1) {
             index = get_index_from_lex(1);
-            if(get_token(index) == NULL){
+            char *token = get_token(index);
+            if(token == NULL){
                 pushError(ERROR_HANDLING_FILENAME, *method_line_num, "Doesn't found an keyword named %s\n", end);
                 dont_compile = 1;
+                free(end);
                 return 0;
             }
             
-            if (compare_the_word(end, get_token(index))) {
+            int matched = compare_the_word(end, token);
+            free(token);
+            if (matched) {
                 break;
             }
         }
         if (index == -1) {
             pushError(ERROR_HANDLING_FILENAME, *method_line_num, "Expected an operator %s\n", end);
             skip_to_next_method(method_line_num, method_token_num);
+            free(end);
             return 1;   // error handled, continue outer loop
         }
         (*method_token_num)++;
@@ -112,5 +129,6 @@ int handle_syntax_tree(char *word, int index,
     if (end == NULL) {
         skip_to_next_line(method_line_num, method_token_num);
     }
+    free(end);
     return 1;   // tree processed, continue loop
 }

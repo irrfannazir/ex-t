@@ -32,7 +32,7 @@ int fget_last_line(const char *filename, char *last_line, int size){
     char line[size];
     
     while (fgets(line, size, fp)) {
-        strcpy(last_line, line);
+        snprintf(last_line, size, "%s", line);
     }
 
     fclose(fp);

@@ -2,7 +2,7 @@
 #define PARSE_H
 
 
-void parsef(const char *);
+int parsef(const char *);
 
 
 #endif

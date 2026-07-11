@@ -10,47 +10,74 @@ void declaration_exec(const char *fn, int *arr, int count){
         case 3: //Declaration without assigning
         {
             const char *datatype = find_datatype(arr[ORDER_DATATYPE]);
-            const char *id = get_token(arr[ORDER_ID]);
+            char *id = get_token(arr[ORDER_ID]);
+            if (!datatype || !id) {
+                free(id);
+                return;
+            }
             char descr[PSUEDO_CODE_MAX];
             get_description(datatype, descr);
-            sprintf(
+            if (snprintf(
                 temp, 
+                sizeof(temp),
                 "%s %s;",
                 datatype,
                 id
-            );
-            sprintf(
+            ) >= (int)sizeof(temp)) {
+                free(id);
+                return;
+            }
+            if (snprintf(
                 psuedo,
+                sizeof(psuedo),
                 "Declare a variable named \"%s\" with datatype which %s\n",
                 id,
                 descr
-            );
+            ) >= (int)sizeof(psuedo)) {
+                free(id);
+                return;
+            }
+            free(id);
         }
         break;
         case 5: //Declaration with assigning
         {
             const char *datatype = find_datatype(arr[ORDER_DATATYPE]);
-            const char *id = get_token(arr[ORDER_ID]);
-            const char *expression = serialize(arr[ORDER_EXPRESSION_START], arr[ORDER_EXPRESSION_END]);
+            char *id = get_token(arr[ORDER_ID]);
+            char *expression = serialize(arr[ORDER_EXPRESSION_START], arr[ORDER_EXPRESSION_END]);
+            if (!datatype || !id || !expression) {
+                free(id);
+                free(expression);
+                return;
+            }
             char descr[PSUEDO_CODE_MAX];
             get_description(datatype, descr);
-            sprintf(
+            if (snprintf(
                 temp, 
+                sizeof(temp),
                 "%s %s = %s;",
                 datatype,
                 id, 
                 expression
-            );
-            sprintf(
+            ) >= (int)sizeof(temp)) {
+                free(id);
+                free(expression);
+                return;
+            }
+            if (snprintf(
                 psuedo,
+                sizeof(psuedo),
                 "Declare a variable named \"%s\" with datatype which %s and assign the value (%s)\n",
                 id,
                 descr,
                 expression
-            );
-            free((char *)expression);
-            free((char *)id);
-            free((char *)id);
+            ) >= (int)sizeof(psuedo)) {
+                free(id);
+                free(expression);
+                return;
+            }
+            free(expression);
+            free(id);
         }
         break;
         default:

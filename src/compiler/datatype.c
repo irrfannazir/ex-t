@@ -1,11 +1,15 @@
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "data.h"
 
 const char *find_datatype(int index){
-    if(strcmp(get_token(index), "single") == 0){
+    char *token = get_token(index);
+    if(token && strcmp(token, "single") == 0){
+        free(token);
         return "int";
     }
+    free(token);
     return NULL;
 }
 
@@ -21,14 +25,16 @@ int get_description(const char *datatype, char *descr){
     while (fgets(name, sizeof(name), fp)) {
         int space_found = strcspn(name, " \n");
         if(name[space_found] == ' '){
-            strcpy(descr, &name[space_found + 1]);
+            snprintf(descr, PSUEDO_CODE_MAX, "%s", &name[space_found + 1]);
             descr[strcspn(descr, "\n")] = '\0';
         }else{
             descr[0] = '\0';
         }
         name[space_found] = '\0';
-        if (strcmp(name, datatype) == 0)
+        if (strcmp(name, datatype) == 0){
+            fclose(fp);
             return 1;
+        }
     }
 
     fclose(fp);

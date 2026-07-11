@@ -234,24 +234,32 @@ static inline int dfa_char_analysis(char c, int *s, struct lexInfo *li){
 
 
 int lexf(const char *ex_filename, const char *dest_filename, const int isinline){
-    char c;
+    int c;
+    int status = 0;
     int state = 0;
     struct lexInfo li = init_lexInfo();
     int permission = 0;
-    create_file(dest_filename, "");
-    create_file(DFA_LEXEME_FILENAME, "");
-    create_file(DFA_TOKEN_FILENAME, "");
+    if (create_file(dest_filename, "")) return 1;
+    if (create_file(DFA_LEXEME_FILENAME, "")) return 1;
+    if (create_file(DFA_TOKEN_FILENAME, "")) return 1;
     init_stat();
     if(ex_filename != NULL){
         FILE *file = fopen(ex_filename, "r");
-        FILE *fpgm = fopen(PROGRAM_FILENAME, "w");
-        fprintf(fpgm, "%s\n", DEFAULT_HEADER_PROGRAM);
         if (!file) {
             delete_file(DFA_TOKEN_FILENAME);
             delete_file(DFA_LEXEME_FILENAME);
             __pc_error__("Error while retrieving program from file named %s", ex_filename);
             return 1;
         }
+        FILE *fpgm = fopen(PROGRAM_FILENAME, "w");
+        if (!fpgm) {
+            fclose(file);
+            delete_file(DFA_TOKEN_FILENAME);
+            delete_file(DFA_LEXEME_FILENAME);
+            __pc_error__("Error while creating generated program file named %s", PROGRAM_FILENAME);
+            return 1;
+        }
+        fprintf(fpgm, "%s\n", DEFAULT_HEADER_PROGRAM);
         while((c = fgetc(file)) != -1){
             if(isinline){
                 if(c == LEX_TOKEN_START && fgetc(file) == LEX_TOKEN_START) {
@@ -260,13 +268,13 @@ int lexf(const char *ex_filename, const char *dest_filename, const int isinline)
                     continue;
                 }
                 if(permission){
-                    int status = dfa_char_analysis(c, &state, &li);
+                    status = dfa_char_analysis((char)c, &state, &li);
                     if (status) break;
                 }else{
                     putc(c, fpgm);
                 }
             }else{
-                int status = dfa_char_analysis(c, &state, &li);
+                status = dfa_char_analysis((char)c, &state, &li);
                 if (status) break;
             }
         }
@@ -276,9 +284,12 @@ int lexf(const char *ex_filename, const char *dest_filename, const int isinline)
     }
     printf("\nTokenizing...\n");
 
-    dfa_char_analysis('\n', &state, &li);
-    change_to_form(dest_filename, DFA_TOKEN_FILENAME, DFA_LEXEME_FILENAME);
+    if (!status) status = dfa_char_analysis('\n', &state, &li);
+    if (!status && change_to_form(dest_filename, DFA_TOKEN_FILENAME, DFA_LEXEME_FILENAME) != 0) {
+        __pc_error__("Error while writing lexical analysis output to %s", dest_filename);
+        status = 1;
+    }
     delete_file(DFA_TOKEN_FILENAME);
     delete_file(DFA_LEXEME_FILENAME);
-    return 0;
+    return status;
 }

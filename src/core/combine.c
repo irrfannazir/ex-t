@@ -46,12 +46,15 @@ static inline int read_file(const char *fn, char **content) {
 }
 
 int combine_the_files(char *fn1, char * fn2){
-    char *content;
-    read_file(fn2, &content);
+    char *content = NULL;
+    if (read_file(fn2, &content)) return 1;
     insert_before_target(fn1, content, EXPGM_CURSOR);
     remove_string_from_file(fn1, EXPGM_CURSOR, 0);
     free(content);
-    delete_file(fn2);
-    if(rename(fn1, fn2)) __pc_error__("Error while renaming %s to %s", fn1, fn2);
+    if (delete_file(fn2)) return 1;
+    if(rename(fn1, fn2)) {
+        __pc_error__("Error while renaming %s to %s", fn1, fn2);
+        return 1;
+    }
     return 0;
 }

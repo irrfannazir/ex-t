@@ -4,7 +4,19 @@
 #include "common/default.h"
 #include "compile/cfh.h"
 
-#define C_PROGRAM_MAX 500
+#define C_PROGRAM_MAX 4096
+
+typedef enum {
+    INSTRUCTION_DECLARATION = 0,
+    INSTRUCTION_DECLARATION_WITHOUT_ASSIGNMENT = 1,
+    INSTRUCTION_ASSIGNMENT = 2,
+    INSTRUCTION_IF_BLOCK = 3,
+    INSTRUCTION_ELSE_IF_BLOCK = 4,
+    INSTRUCTION_ELSE_BLOCK = 5,
+    INSTRUCTION_FOR_BLOCK = 6,
+    INSTRUCTION_WHILE_BLOCK = 7,
+    INSTRUCTION_PRINT = 9
+} InstructionKind;
 
 int *line_to_int_array(const char *line, int *count);
 void compile_file(const char *filename, const char *outfile);

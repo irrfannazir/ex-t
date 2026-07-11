@@ -31,16 +31,19 @@ int printError(const char *filename, int lsn){
     if (!fh) return 1;
     char line[LINE_MAX] = "";
     char msg[LINE_MAX] = "";
+    char record[LINE_MAX] = "";
     float max = 0;
     float priority = 0;
     printf("Error (%d): ", lsn);
-    while(fscanf(fh, "%f %[^\n]s", &priority, line) == 2){
+    while(fgets(record, sizeof(record), fh)){
+        line[0] = '\0';
+        if(sscanf(record, "%f %1023[^\n]", &priority, line) != 2) continue;
         if(max < priority){
-            strcpy(msg, line);
-            strcat(msg, "\n");
+            snprintf(msg, sizeof(msg), "%s\n", line);
             max = priority;
         }else if(max == priority){
-            strcat(msg, line);
+            size_t used = strlen(msg);
+            snprintf(msg + used, sizeof(msg) - used, "%s", line);
         }
     }
     if(strcmp(msg, "") == 0){

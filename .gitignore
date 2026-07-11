@@ -1,1 +1,13 @@
-devtools
+devtools/
+obj/
+*.o
+*.exe
+lex.txt
+parse.txt
+parse.info
+symtab.bin
+symtab.txt
+error.txt
+pgm.c
+*--after-ex-convertion--*.c
+build/
