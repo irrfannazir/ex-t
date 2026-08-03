@@ -34,6 +34,12 @@ void process_parametres(const char *ffn, const char *pfn, int *arr, int count){
         case INSTRUCTION_PRINT:
             print_statement(ffn, pfn, arr, count);
             break;
+        case INSTRUCTION_FUNCTION:
+            function_declaration(pfn, arr[1]);
+            break;
+        case INSTRUCTION_FUNCTION_WITH_ARGS:
+            function_declaration_with_args(pfn, arr, count);
+            break;
         default:
             fprintf(stderr, "Unknown instruction code: %d\n", arr[0]);
             break;

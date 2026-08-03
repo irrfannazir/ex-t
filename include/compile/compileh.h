@@ -15,7 +15,9 @@ typedef enum {
     INSTRUCTION_ELSE_BLOCK = 5,
     INSTRUCTION_FOR_BLOCK = 6,
     INSTRUCTION_WHILE_BLOCK = 7,
-    INSTRUCTION_PRINT = 9
+    INSTRUCTION_PRINT = 8,
+    INSTRUCTION_FUNCTION = 9,
+    INSTRUCTION_FUNCTION_WITH_ARGS = 10
 } InstructionKind;
 
 int *line_to_int_array(const char *line, int *count);

@@ -89,7 +89,7 @@ int main(int argc, char *argv[]){
 
 cleanup:
     for(int i = 0 ; i < size_cache; i++){
-        delete_file(cache[i]);
+        // delete_file(cache[i]);
         free(cache[i]);
     }
 

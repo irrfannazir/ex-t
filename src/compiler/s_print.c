@@ -41,6 +41,7 @@ void print_statement(const char *ffn, const char *efn, int *arr, int count){
             switch(flag){
                 case NO:
                     if (append_text(format, sizeof(format), "%d") ||
+                        (strcmp(para, ",") != 0 && append_text(para, sizeof(para), ", ")) ||
                         append_text(para, sizeof(para), token)) {
                         free(token);
                         return;
