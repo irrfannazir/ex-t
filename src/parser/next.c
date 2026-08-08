@@ -14,6 +14,19 @@
 
 int lsn = 0;
 int ltn = 0;
+int space_count_for_tab = -1;
+int block_depth = 0;
+
+
+int delete_space(int block_depth){
+    char fn[50];
+    SYMTAB_FILE_NAME(fn, block_depth);
+    if(file_exists(fn)){
+        delete_file(fn);
+    }
+    return 0;
+}
+
 
 int method_inline_function(int mln);
 
@@ -71,6 +84,31 @@ int skip_to_next_line(int *mln, int *mtn){
     }
     lsn++;
     ltn = 0;
+
+    if(num_lines(lsn) > 1){
+        print_line(num_lines(lsn) - 1);
+        int prev_indent = get_indentation(num_lines(lsn) - 2);
+        int next_indent = get_indentation(num_lines(lsn) - 1);
+        if(next_indent == -1) next_indent = 0;
+        if(prev_indent == -1) prev_indent = 0;
+        
+        if(prev_indent < next_indent){
+            if( space_count_for_tab == -1 ) space_count_for_tab = next_indent - prev_indent;
+            if( next_indent != prev_indent + space_count_for_tab ){
+                pushError(ERROR_HANDLING_FILENAME, 0xFFFF, "Indentation Error");
+            }else{
+                block_depth++;
+            }
+        }
+        
+        while(prev_indent > next_indent){
+            delete_space(block_depth);
+            block_depth--;
+            prev_indent -= space_count_for_tab;
+        }
+    }
+
+
     *mtn = 0;
     *mln = 0;
     print_error();

@@ -49,7 +49,7 @@ int combine_the_files(char *fn1, char * fn2){
     char *content = NULL;
     if (read_file(fn2, &content)) return 1;
     insert_before_target(fn1, content, EXPGM_CURSOR);
-    remove_string_from_file(fn1, EXPGM_CURSOR, 0);
+    remove_string_from_file(fn1, EXPGM_CURSOR, 1);
     free(content);
     if (delete_file(fn2)) return 1;
     if(rename(fn1, fn2)) {

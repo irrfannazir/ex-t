@@ -14,7 +14,6 @@ char working_identifier[NAME_STRLEN] = "";
 int parsef(const char *dest_filename) {
     printf("Parsing the tokens.\n");
     if (create_file(dest_filename, NULL)) return 1;
-    if (create_file(DEFINED_IDENTIFIER_FILE_NAME, "")) return 1;
     if (create_file(ERROR_HANDLING_FILENAME, "")) return 1;
 
     int method_line_num = 0;

@@ -109,7 +109,8 @@ int compilef(const char *src_filename, const char *final_filename, const char *d
     if (create_file(PARSED_INFORMATION, "")) return 1;
     add_the_program(src_filename, final_filename, dest_filename);
     printf("********The output program implemented in C programming Language********\n\n");
-    remove_string_from_file(dest_filename, PGM_CURSOR, 1);
+    remove_string_from_file(dest_filename, PGM_CURSOR, 1); 
+    remove_string_from_file(dest_filename, EXPGM_CURSOR, 1);
     remove_string_from_file(final_filename, FUNCTION_CURSOR, 1);
     remove_string_from_file(final_filename, INCLUDE_CURSOR, 1);
     print_file_content(dest_filename);

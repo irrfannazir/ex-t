@@ -32,5 +32,7 @@ void block_paradigm(const char *fn, char *keyword, int *arr, int count);
 void else_condition(const char *fn);
 void for_condition(const char *fn, int *arr, int count);
 void print_statement(const char *ffn, const char *fn, int *arr, int count);
+void function_declaration(const char *dfn, int i_name);
+void function_declaration_with_args(const char *dfn, int *arr, int count);
 
 #endif

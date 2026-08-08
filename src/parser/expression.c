@@ -4,13 +4,19 @@
 #include "parse/node.h"
 #include "parse/strh.h"
 #include "common/table.h"
+#include "common/fileh.h"
 #include "data.h"
 
 int is_declared_variable(int index){
-    char *token = get_token(index);
-    int declared = token && vscan(DEFINED_IDENTIFIER_FILE_NAME, token) != -1;
-    free(token);
-    return declared;
+    int i = 0;
+    char fn[sizeof(SYMTAB_FILE_NAME_FORMAT)];
+    SYMTAB_FILE_NAME(fn, i);
+    while(file_exists(fn)){
+        if(vscan(fn, get_token(index)) != -1) return 1;
+        i++;
+        SYMTAB_FILE_NAME(fn, i);
+    }
+    return 0;
 }
 
 int is_unidentified(struct Node *ptr){

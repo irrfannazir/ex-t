@@ -13,10 +13,14 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include "parse/pdebug.h"
 
 
 const char delimiter = ';';
 int dont_compile = 0;
+#ifdef LINE_ANALYSIS
+char src_filename[LINE_FILENAME_MAX];
+#endif
 
 
 static inline int dfa_char_analysis(char c, int *s, struct lexInfo *li){
@@ -242,6 +246,9 @@ int lexf(const char *ex_filename, const char *dest_filename, const int isinline)
     if (create_file(dest_filename, "")) return 1;
     if (create_file(DFA_LEXEME_FILENAME, "")) return 1;
     if (create_file(DFA_TOKEN_FILENAME, "")) return 1;
+    #ifdef LINE_ANALYSIS
+    strcpy(src_filename, ex_filename);
+    #endif
     init_stat();
     if(ex_filename != NULL){
         FILE *file = fopen(ex_filename, "r");

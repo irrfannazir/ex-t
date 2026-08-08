@@ -50,6 +50,13 @@ static inline void init_keywords(){
     fclose(input);
 }
 
+int file_exists(const char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (!file) return 0;
+    fclose(file);
+    return 1;
+}
+
 void init_stat() {
     create_file(PARSE_DATATYPE_LIST_FILE_NAME, DEFAULT_TEXT);
     create_file(PARSE_KEYWORD_LIST_FILE_NAME, "");

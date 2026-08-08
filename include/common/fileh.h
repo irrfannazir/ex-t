@@ -5,6 +5,7 @@
 char* get_nth_line(const char* filename, int n, const char *keyword);
 
 //file.c
+int file_exists(const char *filename);
 int create_file(const char *filename, const char *content);
 int delete_file(const char *filename);
 void print_file_content(const char* filename);

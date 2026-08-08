@@ -21,10 +21,11 @@
 #define GENERATED_DIRECTORY           "build"
 #define PARSING_HANDLING_FILE_NAME    GENERATED_DIRECTORY "/parse.txt"
 #define PARSED_INFORMATION            GENERATED_DIRECTORY "/parse.info"
-#define DEFINED_IDENTIFIER_FILE_NAME  GENERATED_DIRECTORY "/symtab.bin"
 #define PARSE_DATATYPE_LIST_FILE_NAME "grammar/datatype.txt"
 #define PARSE_KEYWORD_LIST_FILE_NAME  "grammar/keywords.bin"
 
+#define SYMTAB_FILE_NAME_FORMAT        GENERATED_DIRECTORY "/symtab_%03d.bin"
+#define SYMTAB_FILE_NAME(buf, digit) snprintf((buf), (sizeof(SYMTAB_FILE_NAME_FORMAT)), SYMTAB_FILE_NAME_FORMAT, (digit))
 
 // flush
 #ifdef DELETE_UNWANTED_FILES
